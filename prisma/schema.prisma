@@ -1,11 +1,64 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  cpf         String        @unique
+  password    String
+  birthDate   DateTime
+  role        Role          @default(USER)
+  createdAt   DateTime      @default(now())
+  active      Boolean       @default(true)
+  Vaccination Vaccination[]
+}
+
+model Vaccine {
+  id           Int           @id @default(autoincrement())
+  name         String
+  type         String
+  manufacturer String
+  batchId      Int
+  batch        Batch         @relation(fields: [batchId], references: [id])
+  Vaccination  Vaccination[]
+}
+
+model Vaccination {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  vaccineId        Int
+  vaccinationDate  DateTime @default(now())
+  vaccinationLocal String?
+  user             User     @relation(fields: [userId], references: [id])
+  vaccine          Vaccine  @relation(fields: [vaccineId], references: [id])
+}
+
+model Batch {
+  id                Int       @id @default(autoincrement())
+  batchNumber       BigInt
+  amount            BigInt
+  manufacturingDate DateTime
+  dueDate           DateTime
+  stockId           Int?
+  Stock             Stock?    @relation(fields: [stockId], references: [id])
+  Vaccine           Vaccine[]
+}
+
+model Stock {
+  id     Int     @id @default(autoincrement())
+  batchs Batch[]
+}
+
+enum Role {
+  USER
+  EMPLOYEE
+  ADMININSTRATOR
 }
