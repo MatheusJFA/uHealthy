@@ -3,3 +3,7 @@
 mysql or sqlite.
 3. Run yarn prisma introspect to turn your database schema into a Prisma data model.
 4. Run yarn prisma generate to install Prisma Client. You can then start querying your database. 
+
+
+#Colocar no Docker o comando.
+docker run --name uHealthy -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
