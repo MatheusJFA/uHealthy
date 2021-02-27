@@ -110,7 +110,7 @@
   dependencies:
     "@prisma/engines" "2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223"
 
-"@prisma/client@2.17.0":
+"@prisma/client@^2.17.0":
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.17.0.tgz#e38462796c2e824504763416f5e3a7219d70652d"
   integrity sha512-tzsBxtx9J1epOGCiBeXur1tEz81UIdWg2G/HpDmflXKcv/MJb+KCWSKSsEW49eXcvVwRgxNyxLoCO6CwvjQKcg==
@@ -1345,7 +1345,7 @@ prebuild-install@^6.0.0:
     tunnel-agent "^0.6.0"
     which-pm-runs "^1.0.0"
 
-prisma@2.17.0:
+prisma@^2.17.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-2.17.0.tgz#686469914ed13d4b0926ee5f17efb7a9ab741e8a"
   integrity sha512-NypJI7OCXCfDkRKubbVb3nmPeRJ1SjQfg6QAwK06KsreBZl1F96rFz2iB2bl4kIrhLAbIySBjwUJlG87Jsxt7g==
