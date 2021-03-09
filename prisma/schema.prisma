@@ -15,7 +15,6 @@ model User {
   cpf         String        @unique
   password    String
   birthDate   DateTime
-  role        Role          @default(USER)
   createdAt   DateTime      @default(now())
   active      Boolean       @default(true)
   Vaccination Vaccination[]
@@ -26,9 +25,8 @@ model Vaccine {
   name         String
   type         String
   manufacturer String
-  batchId      Int
-  batch        Batch         @relation(fields: [batchId], references: [id])
-  Vaccination  Vaccination[]
+  vaccineType  VaccineType 
+  vaccination  Vaccination[]
 }
 
 model Vaccination {
@@ -41,24 +39,7 @@ model Vaccination {
   vaccine          Vaccine  @relation(fields: [vaccineId], references: [id])
 }
 
-model Batch {
-  id                Int       @id @default(autoincrement())
-  batchNumber       BigInt
-  amount            BigInt
-  manufacturingDate DateTime
-  dueDate           DateTime
-  stockId           Int?
-  Stock             Stock?    @relation(fields: [stockId], references: [id])
-  Vaccine           Vaccine[]
-}
-
-model Stock {
-  id     Int     @id @default(autoincrement())
-  batchs Batch[]
-}
-
-enum Role {
-  USER
-  EMPLOYEE
-  ADMININSTRATOR
+enum VaccineType {
+  MANDATORY
+  OTHERS
 }
