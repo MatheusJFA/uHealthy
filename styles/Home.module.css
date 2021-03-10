@@ -6,6 +6,7 @@
   align-items: center;
 }
 
+
 .imgLogin {
 width: 730px;
 height: 530px;
@@ -19,7 +20,7 @@ height: 530px;
 }
 
 .title {
-  padding: 2rem 0;
+  margin: 2rem 0;
 }
 
 .login {
@@ -43,7 +44,7 @@ height: 530px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 2rem;
+  margin: 0 2rem;
 }
 
 .btnPrimary {

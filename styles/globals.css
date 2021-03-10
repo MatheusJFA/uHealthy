@@ -31,7 +31,7 @@ button:hover {
 
 
 
-label,input {
+label,input,input[type='email'],input[type='password']  {
   transition: all 0.2s;
   touch-action: manipulation;
 }
@@ -109,4 +109,3 @@ h2 > a {
   font-weight: 400;
   font-size: 0.875rem;
 }
-

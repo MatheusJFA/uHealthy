@@ -9,7 +9,7 @@ export default function Home() {
 
       <Image
         className={styles.imgLogin}
-        src="/cadastro.svg"
+        src="/landing.svg"
         alt="Landing page image"
         width="730"
         height="530"
@@ -21,11 +21,11 @@ export default function Home() {
 
         <div className={styles.inputText}>
           <div className={styles.fields}>
-            <input type="text" className={styles.cpf} name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX" />
+            <input type="text"  name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX" />
             <label htmlFor="cpf"> cpf </label>
           </div>
           <div className={styles.fields}>
-            <input type="password" className={styles.password} name="password" id="password" placeholder="Senha" />
+            <input type="password"  name="password" id="password" placeholder="Senha" />
             <label htmlFor="password"> senha </label>
           </div>
         </div>
