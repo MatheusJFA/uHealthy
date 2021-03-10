@@ -6,25 +6,56 @@
   align-items: center;
 }
 
-.btnPrimary {
-  border: none;
-  padding: 0 5px;
-  background-color: var(--primary);
-  color: var(--secondary);
-  border-radius: 5px;
+.imgLogin {
+width: 730px;
+height: 530px;
+}
+
+.fields {
+  display: flex;
+  flex-flow: column-reverse;
+  margin-bottom:1rem;
+  width: 100%;
+}
+
+.title {
+  padding: 2rem 0;
 }
 
 .login {
   min-width: 26.875rem;
-  min-height:  33.75rem;
+  min-height: 26.875rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   border: 4px solid var(--primary);
   border-radius: 10px;
+}
+
+.inputText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
 }
 
 .footerLogin {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding: 0 2rem;
 }
 
+.btnPrimary {
+  border: none;
+  padding: 10px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border-radius: 5px;
+}
+
+
+
+@media (min-width:680px) {
+
+}

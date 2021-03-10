@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;400;500;600&family=Rubik:wght@300;400;500;600&display=swap');
 
+:root {
+  --primary: #E83C38;
+  --secondary: #EBEDED;
+  --textColor: #434343;
+}
+
 *, 
 html,
 body {
@@ -9,13 +15,68 @@ body {
   margin: 0;
   font-family: 'Fira Sans', sans-serif;
   font-family: 'Rubik', sans-serif;
+  background-color: var(--secondary);
 }
 
+
+button {
+  transition: 0.2s;
+}
+
+button:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 2px #bdbdbd;
+  transition: 0.2s;
+}
+
+
+
+label,input {
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+
+label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  margin-left: 0.3rem;
+}
+
+input:placeholder-shown + label {
+  cursor: text;
+  max-width: 66.66%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left bottom;
+  transform:translate(0 , 1.6rem) scale(1.2);
+}
+
+::-webkit-input-placeholder {
+  opacity: 0;
+  transition: inherit;
+}
+
+input:focus::-webkit-input-placeholder {
+  opacity: 1;
+}
+
+input:not(:placeholder-shown) + label,
+input:focus + label {
+  transform: translate(0, 0) scale(1);
+  cursor: pointer;
+}
+
+
+
 input {
+  width: 100%;
   border: none;
   border-bottom: 2px solid var(--primary);
-  margin: 1.2rem; 
-  padding-bottom: 0.3rem;
+  font-size: 1em;
+  padding-bottom: 0.5rem;
+  padding-left: 0.3rem;
 }
 
 input:focus {
@@ -49,8 +110,3 @@ h2 > a {
   font-size: 0.875rem;
 }
 
-:root {
-  --primary: #E83C38;
-  --secondary: #EBEDED;
-  --textColor: #434343;
-}
