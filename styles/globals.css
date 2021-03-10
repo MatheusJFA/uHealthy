@@ -1,9 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;400;500;600&family=Rubik:wght@300;400;500;600&display=swap');
+
 *, 
 html,
 body {
+  max-height: 100vh;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Rubik', sans-serif;
+}
+
+input {
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  margin: 1.2rem; 
+  padding-bottom: 0.3rem;
+}
+
+input:focus {
+  outline: none; 
+}
+
+input::placeholder{
+  color: var(--textColor);
+}
+
+h1 {
+  text-align: center;
+  color: var(--textColor);
+  font-family: 'Rubik';
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+h2 {
+  color: var(--textColor);
+  font-family: 'Rubik';
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+h2 > a {
+  color: var(--primary);
+  text-decoration: none;
+  font-family: 'Rubik';
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+:root {
+  --primary: #E83C38;
+  --secondary: #EBEDED;
+  --textColor: #434343;
 }
