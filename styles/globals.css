@@ -69,8 +69,6 @@ input:focus + label {
   cursor: pointer;
 }
 
-
-
 input {
   width: 100%;
   border: none;
