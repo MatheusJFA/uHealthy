@@ -1,11 +1,45 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  cpf         String        @unique
+  password    String
+  birthDate   DateTime
+  createdAt   DateTime      @default(now())
+  active      Boolean       @default(true)
+  Vaccination Vaccination[]
+}
+
+model Vaccine {
+  id           Int           @id @default(autoincrement())
+  name         String
+  type         String
+  manufacturer String
+  vaccineType  VaccineType 
+  vaccination  Vaccination[]
+}
+
+model Vaccination {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  vaccineId        Int
+  vaccinationDate  DateTime @default(now())
+  vaccinationLocal String?
+  user             User     @relation(fields: [userId], references: [id])
+  vaccine          Vaccine  @relation(fields: [vaccineId], references: [id])
+}
+
+enum VaccineType {
+  MANDATORY
+  OTHERS
 }

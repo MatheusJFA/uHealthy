@@ -1,65 +1,47 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Link from "next/link";
+import Image from 'next/image'
+import styles from "../styles/Home.module.css";
+
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <Image
+        className={styles.imgLogin}
+        src="/landing.svg"
+        alt="Landing page image"
+        width="730"
+        height="530"
+        draggable="false"
+      />
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+      <div className={styles.login}>
+        <h1 className={styles.title} >Bem-vindo!</h1>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={styles.inputText}>
+          <div className={styles.fields}>
+            <input type="text"  name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX" />
+            <label htmlFor="cpf"> cpf </label>
+          </div>
+          <div className={styles.fields}>
+            <input type="password"  name="password" id="password" placeholder="Senha" />
+            <label htmlFor="password"> senha </label>
+          </div>
         </div>
-      </main>
+       
+        <div className={styles.footerLogin}>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+          <h2>Não possui uma conta? <br />
+            <Link href="/register">
+              <a>Crie uma!</a>
+            </Link>
+          </h2>
+
+          <button className={styles.btnPrimary}>Acessar</button>
+
+        </div>
+      </div>
     </div>
   )
 }
