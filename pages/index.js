@@ -21,7 +21,7 @@ export default function Home() {
       />
 
       <div className={styles.login}>
-        <h1 className={styles.title} >Bem-vindo!</h1>
+        <h1 className={styles.title}>Bem-vindo!</h1>
 
         <div className={styles.inputText}>
           <div className={styles.fields}>
@@ -36,7 +36,7 @@ export default function Home() {
        
         <div className={styles.footerLogin}>
 
-          <h2>Não possui uma conta? <br />
+          <h2>Não possui uma conta?<br/>
             <Link href="/register">
               <a>Crie uma!</a>
             </Link>
