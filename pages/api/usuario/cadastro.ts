@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +25,7 @@ export default async (request, response) => {
         cpf,
         name,
         email,
-        password,
+        password: await bcrypt.hash(password, 8),
         phone,
         birthDate
       },
