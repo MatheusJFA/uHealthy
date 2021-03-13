@@ -64,6 +64,7 @@ input:focus::-webkit-input-placeholder {
 
 input:not(:placeholder-shown) + label,
 input:focus + label {
+  color: var(--textColor);
   transform: translate(0, 0) scale(1);
   cursor: pointer;
 }
