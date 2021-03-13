@@ -1,9 +1,13 @@
+import React, { useState } from 'react';
 import Link from "next/link";
 import Image from 'next/image'
 import styles from "../styles/Home.module.css";
 
 
 export default function Home() {
+  const[cpf, setCPF] = useState("");
+  const[password, setPassword] = useState("");
+
   return (
     <div className={styles.container}>
 
