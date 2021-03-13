@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 
 
 export default function Home() {
+
   const[cpf, setCPF] = useState("");
   const[password, setPassword] = useState("");
 
@@ -25,11 +26,11 @@ export default function Home() {
 
         <div className={styles.inputText}>
           <div className={styles.fields}>
-            <input type="text"  name="cpf" id="cpf" value={cpf} OnChangeText={setCPF} placeholder="XXX.XXX.XXX-XX" />
+            <input type="text"  name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} placeholder="XXX.XXX.XXX-XX" />
             <label htmlFor="cpf"> cpf </label>
           </div>
           <div className={styles.fields}>
-            <input type="password"  name="password" id="password" value={password} OnChangeText={setPassword} placeholder="Senha" />
+            <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" />
             <label htmlFor="password"> senha </label>
           </div>
         </div>
