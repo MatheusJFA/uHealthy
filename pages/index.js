@@ -10,8 +10,24 @@ export default function Home() {
   const[password, setPassword] = useState("");
 
   return (
-    <div className={styles.container}>
-
+    <div className={styles.vhFull}>
+      
+       
+      <div className={styles.about}>
+        <Image className={styles.imgLogo}
+          src="/Logo.svg"
+          alt="uHealthy"
+          draggable="false"
+          width="300"
+          height="125"
+        />
+        <div className={styles.aboutText}>
+          <p>uHealthy é seu cartão de vacinas digital.</p>
+          <p>Aqui você poderá visualizar todas as vacinas que irá tomar e já tomou.</p>
+        </div>
+      </div>
+      
+      <div className={styles.container}>
       <Image
         className={styles.imgLogin}
         src="/landing.svg"
@@ -45,6 +61,7 @@ export default function Home() {
 
           <button className={styles.btnPrimary}>Acessar</button>
 
+        </div>
         </div>
       </div>
     </div>

@@ -1,11 +1,31 @@
-.container {
+.vhFull {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.container {
   padding: 0 0.5rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aboutText {
+  margin-top: 2.5rem;
+  text-align: center;
+  letter-spacing: 0.1rem;
+  font-weight: 500;
+  line-height: 2rem;
+  color: var(--textColor);
+}
 
 .imgLogin {
 width: 730px;
