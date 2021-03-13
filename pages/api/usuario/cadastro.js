@@ -8,12 +8,14 @@ const prisma = new PrismaClient();
 export default async (request, response) => {
   if (request.method === "POST") {
     const schema = Yup.object().shape({
-      cpf: Yup.string().max(14).required(),
-      name: Yup.string().required(),
-      email: Yup.string().email().required(),
-      password: Yup.string().min(6).max(15).required(),
-      phone: Yup.string().required(),
-      birthDate: Yup.date().required()
+      cpf: Yup.string().max(14).required('Password is required'),
+      name: Yup.string().required('Password is required'),
+      email: Yup.string().email().required('Password is required'),
+      password: Yup.string().min(6).max(15).required('Password is required'),
+      passwordConfirmation: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+      phone: Yup.string().required('Password is required'),
+      birthDate: Yup.date().required('Password is required')
     });
 
     if (!(await schema.isValid(request.body))) {
