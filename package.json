@@ -10,11 +10,14 @@
   "dependencies": {
     "@prisma/client": "^2.17.0",
     "@vercel/node": "^1.9.1",
-    "axios": "^0.21.1",
-    "heroku": "^7.50.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "yup": "^0.32.9",
+    "axios": "^0.21.1",
+    "heroku": "^7.50.0",
     "vercel": "^21.3.3"
   },
   "devDependencies": {
