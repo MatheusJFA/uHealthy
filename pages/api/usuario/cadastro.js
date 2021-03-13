@@ -1,10 +1,25 @@
-import { PrismaClient, Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import * as Yup from 'yup';
+
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async (request, response) => {
   if (request.method === "POST") {
+    const schema = Yup.object().shape({
+      cpf: Yup.string().max(14).required(),
+      name: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().min(6).max(15).required(),
+      phone: Yup.string().required(),
+      birthDate: Yup.date().required()
+    });
+
+    if (!(await schema.isValid(request.body))) {
+      return response.status(400).json({ error: 'Validação falhou' });
+    }
+
     const { cpf, name, email, password, phone, birthDate } = request.body;
 
     const usuarioExiste = await prisma.user.findFirst({
@@ -31,6 +46,6 @@ export default async (request, response) => {
       },
     });
 
-    response.status(200).json(usuario);
+    response.status(200).json(usuario.name, usuario.email);
   }
 }
