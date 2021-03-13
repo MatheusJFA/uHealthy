@@ -13,7 +13,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  function Log(){
+  function Log(cpf, email, name, date, phone, password, passwordConfirmation){
     console.log(cpf, email, name, date, phone, password, passwordConfirmation);
   }
 
@@ -64,7 +64,7 @@ export default function Register() {
           </div>
          
           <div className={styles.footerLogin}>
-            <button className={styles.btnPrimary} Onsubmit={() => Log()}>Cadastrar</button>
+            <button className={styles.btnPrimary} onSubmit={(cpf, email, name, date, phone, password, passwordConfirmation) => Log(cpf, email, name, date, phone, password, passwordConfirmation)}>Cadastrar</button>
           </div>
         
         </div>
