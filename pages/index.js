@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import Image from 'next/image'
 import styles from "../styles/Home.module.css";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 
 export default function Home() {
@@ -23,11 +22,10 @@ export default function Home() {
 
       const data = await response.json();
 
-      NotificationManager.success("Redirecionando para a tela de usuarios", "Sucesso");
       localStorage.setItem("JWT", data.jwt);
       return data;
     } catch (error) {
-      NotificationManager.Error(`Erro: ${error.message}`, "Error", 3000)
+      throw new Error(`Erro: ${error.message}`);
     }
   }
 
@@ -84,7 +82,6 @@ export default function Home() {
           </form>
         </div>
       </div>
-      <NotificationContainer />
     </div>
 
   )
