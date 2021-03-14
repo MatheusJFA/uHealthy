@@ -8,14 +8,26 @@ export default function Register() {
   const [cpf, setCPF] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [date, setDate] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  function Log(cpf, email, name, date, phone, password, passwordConfirmation) {
-    console.log(cpf, email, name, date, phone, password, passwordConfirmation);
+  
+  async function Register() {
+    const response = await fetch("/api/usuario/cadastro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringfy({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+    });
+
+    const data = await response.json();
+    localStorage.setItem(data.jwt);
+    return data;
   }
+
 
   return (
     <div className={styles.container}>
@@ -35,7 +47,7 @@ export default function Register() {
           <div className={styles.inputText}>
             <div className={styles.fields}>
               <input type="text" name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} maxLength="14" placeholder="XXX.XXX.XXX-XX" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
-      title="Digite o CPF no formato XXX.XXX.XXX-XX"/>
+                title="Digite o CPF no formato XXX.XXX.XXX-XX" />
               <label htmlFor="cpf"> cpf </label>
             </div>
             <div className={styles.fields}>
@@ -47,8 +59,8 @@ export default function Register() {
               <label htmlFor="name"> nome </label>
             </div>
             <div className={styles.fields}>
-              <input type="date" name="data" id="data" value={date} onChange={e => setDate(e.target.value)} placeholder="DD/MM/AAAA" required />
-              <label htmlFor="data"> data de nascimento </label>
+              <input type="date" name="birthDate" id="birthDate" value={birthDate} onChange={e => setBirthDate(e.target.value)} placeholder="DD/MM/AAAA" required />
+              <label htmlFor="birthDate"> data de nascimento </label>
             </div>
             <div className={styles.fields}>
               <input type="text" name="phone" id="phone" value={phone} onChange={e => setPhone(e.target.value)} placeholder=" " required />
@@ -65,7 +77,7 @@ export default function Register() {
           </div>
 
           <div className={styles.footerLogin}>
-            <button className={styles.btnPrimary} onSubmit={(cpf, email, name, date, phone, password, passwordConfirmation) => Log(cpf, email, name, date, phone, password, passwordConfirmation)}>Cadastrar</button>
+            <button className={styles.btnPrimary} onClick={() => Register()}>Cadastrar</button>
           </div>
         </form>
       </div>
