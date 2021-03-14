@@ -6,13 +6,25 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
 
-  const[cpf, setCPF] = useState("");
-  const[password, setPassword] = useState("");
+  const [cpf, setCPF] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function login() {
+    const response = await fetch("/api/usuario/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringfy({ cpf, password })
+    });
+
+    const data = await response.json();
+    localStorage.setItem(data.jwt);
+    return data;
+  }
 
   return (
     <div className={styles.vhFull}>
-      
-       
       <div className={styles.about}>
         <Image className={styles.imgLogo}
           src="/Logo.svg"
@@ -23,45 +35,45 @@ export default function Home() {
         />
         <div className={styles.aboutText}>
           <p>uHealthy é seu cartão de vacinas digital.</p>
-          <p>Aqui você poderá visualizar todas as vacinas que irá tomar e já tomou.</p>
         </div>
       </div>
-      
+
       <div className={styles.container}>
-      <Image
-        className={styles.imgLogin}
-        src="/landing.svg"
-        alt="Landing page image"
-        width="730"
-        height="530"
-        draggable="false"
-      />
+        <Image
+          className={styles.imgLogin}
+          src="/landing.svg"
+          alt="Landing page image"
+          width="730"
+          height="530"
+          draggable="false"
+        />
 
-      <div className={styles.login}>
-        <h1 className={styles.title}>Bem-vindo!</h1>
+        <div className={styles.login}>
+          <h1 className={styles.title}>Bem-vindo!</h1>
 
-        <div className={styles.inputText}>
-          <div className={styles.fields}>
-            <input type="text"  name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} placeholder="XXX.XXX.XXX-XX" />
-            <label htmlFor="cpf"> cpf </label>
-          </div>
-          <div className={styles.fields}>
-            <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" />
-            <label htmlFor="password"> senha </label>
-          </div>
-        </div>
-       
-        <div className={styles.footerLogin}>
+          <form>
+            <div className={styles.inputText}>
+              <div className={styles.fields}>
+                <input type="text" name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} placeholder="XXX.XXX.XXX-XX" />
+                <label htmlFor="cpf"> cpf </label>
+              </div>
+              <div className={styles.fields}>
+                <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" />
+                <label htmlFor="password"> senha </label>
+              </div>
+            </div>
 
-          <h2>Não possui uma conta?<br/>
-            <Link href="/register">
-              <a>Crie uma!</a>
-            </Link>
-          </h2>
+            <div className={styles.footerLogin}>
 
-          <button className={styles.btnPrimary}>Acessar</button>
+              <h2>Não possui uma conta?<br />
+                <Link href="/register">
+                  <a>Crie uma!</a>
+                </Link>
+              </h2>
 
-        </div>
+              <button className={styles.btnPrimary} onclick={() => login()}>Acessar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
