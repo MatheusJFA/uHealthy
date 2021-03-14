@@ -1,3 +1,5 @@
+import {NextApiRequest, NextApiResponse} from "next";
+
 import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
 
@@ -5,7 +7,9 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default async (request, response) => {
+export default async (request: NextApiRequest, response: NextApiResponse) => {
+  var today = new Date();
+
   if (request.method === "POST") {
     const schema = Yup.object().shape({
       cpf: Yup.string().max(14).required(),
@@ -15,14 +19,14 @@ export default async (request, response) => {
       passwordConfirmation: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match'),
       phone: Yup.string().required(),
-      birthDate: Yup.date().required()
+      birthDate: Yup.date().required().max(today)
     });
 
     if (!(await schema.isValid(request.body))) {
       return response.status(400).json({ error: 'Validação falhou' });
     }
 
-    const { cpf, name, email, password, phone, birthDate } = request.body;
+    let { cpf, name, email, password, phone, birthDate } = request.body;
 
     const usuarioExiste = await prisma.user.findFirst({
       where: {
@@ -37,6 +41,8 @@ export default async (request, response) => {
       return response.status(400).json({ error: 'Usuário ja existe' });
     }
 
+    birthDate = new Date(birthDate).toISOString() as any;
+
     const usuario = await prisma.user.create({
       data: {
         cpf,
@@ -48,6 +54,10 @@ export default async (request, response) => {
       },
     });
 
-    response.status(200).json(usuario.name, usuario.email);
+    delete usuario.password;
+
+    response.status(200).send({usuario});
+
+    await prisma.$disconnect()
   }
 }

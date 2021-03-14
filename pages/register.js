@@ -14,17 +14,18 @@ export default function Register() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   
-  async function Register() {
+  async function Register(event) {
+    event.preventDefault();
     const response = await fetch("/api/usuario/cadastro", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringfy({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+      body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
     });
 
     const data = await response.json();
-    localStorage.setItem(data.jwt);
+    localStorage.setItem("JWT", data.jwt);
     return data;
   }
 
@@ -77,7 +78,7 @@ export default function Register() {
           </div>
 
           <div className={styles.footerLogin}>
-            <button className={styles.btnPrimary} onClick={() => Register()}>Cadastrar</button>
+            <button className={styles.btnPrimary} onClick={(event) => Register(event)}>Cadastrar</button>
           </div>
         </form>
       </div>

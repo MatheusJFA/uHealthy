@@ -1,4 +1,6 @@
 
+import {NextApiRequest, NextApiResponse} from "next";
+
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 import { PrismaClient, Prisma } from '@prisma/client';
@@ -7,10 +9,10 @@ import authConfig from '../../../config/auth';
 
 const prisma = new PrismaClient();
 
-export default async (request, response) => {
+export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "POST") {
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(),
+      cpf: Yup.string().min(11).max(14).required(),
       password: Yup.string().required(),
     });
 
@@ -38,6 +40,7 @@ export default async (request, response) => {
 
     const { id, name } = usuario;
 
+    await prisma.$disconnect()
     return response.status(200).json({
       usuario: {
         name,

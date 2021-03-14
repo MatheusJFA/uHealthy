@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import Image from 'next/image'
 import styles from "../styles/Home.module.css";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 
 export default function Home() {
@@ -9,18 +10,25 @@ export default function Home() {
   const [cpf, setCPF] = useState("");
   const [password, setPassword] = useState("");
 
-  async function login() {
-    const response = await fetch("/api/usuario/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringfy({ cpf, password })
-    });
+  async function login(event) {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/usuario/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cpf, password })
+      });
 
-    const data = await response.json();
-    localStorage.setItem(data.jwt);
-    return data;
+      const data = await response.json();
+
+      NotificationManager.success("Redirecionando para a tela de usuarios", "Sucesso");
+      localStorage.setItem("JWT", data.jwt);
+      return data;
+    } catch (error) {
+      NotificationManager.Error(`Erro: ${error.message}`, "Error", 3000)
+    }
   }
 
   return (
@@ -71,11 +79,13 @@ export default function Home() {
                 </Link>
               </h2>
 
-              <button className={styles.btnPrimary} onclick={() => login()}>Acessar</button>
+              <button className={styles.btnPrimary} onClick={(e) => login(e)}>Acessar</button>
             </div>
           </form>
         </div>
       </div>
+      <NotificationContainer />
     </div>
+
   )
 }
