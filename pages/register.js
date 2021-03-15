@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from 'next/image';
+import Router from 'next/router';
 import styles from "../styles/Register.module.css";
 
 export default function Register() {
@@ -13,7 +14,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  
+
   async function Register(event) {
     event.preventDefault();
     const response = await fetch("/api/usuario/cadastro", {
@@ -26,6 +27,7 @@ export default function Register() {
 
     const data = await response.json();
     localStorage.setItem("JWT", data.jwt);
+    Router.push('/');
     return data;
   }
 

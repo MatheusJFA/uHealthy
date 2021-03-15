@@ -1,5 +1,5 @@
 
-import {NextApiRequest, NextApiResponse} from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
@@ -24,9 +24,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const usuario = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email },
-        ],
+        email,
       },
     });
 
@@ -40,7 +38,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const { id, name } = usuario;
 
-    await prisma.$disconnect()
+    await prisma.$disconnect();
+
     return response.status(200).json({
       usuario: {
         name,

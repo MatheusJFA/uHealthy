@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
@@ -56,8 +56,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     delete usuario.password;
 
-    response.status(200).send({usuario});
-
     await prisma.$disconnect()
+
+    return response.status(200).send({ usuario });
   }
 }
