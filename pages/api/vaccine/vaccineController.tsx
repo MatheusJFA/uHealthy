@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import * as Yup from 'yup';
+import Messages from '../../messages';
 
 const prisma = new PrismaClient();
 
@@ -27,7 +28,7 @@ export default async (request, response) => {
         });
 
         if (vaccineExists) {
-            return response.status(400).json({ error: 'Vacina já existe' });
+            return response.status(400).json({ error: Messages.MSG_E000("Vacina")});
         }
 
         // const vaccine = await prisma.vaccine.create({
