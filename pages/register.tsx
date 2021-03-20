@@ -5,9 +5,10 @@ import Router from 'next/router';
 import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
 
+import * as Yup from 'yup';
+
 
 export default function Register() {
-
   const [cpf, setCPF] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -15,7 +16,6 @@ export default function Register() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-
 
   async function Register(event) {
     event.preventDefault();
@@ -106,9 +106,9 @@ export default function Register() {
 
             <Input
               label="confirmar senha"
-              id="passwordConf"
+              id="passwordConfirmation"
               onChange={e => setPasswordConfirmation(e.target.value)}
-              placeholder=" "
+              placeholder=""
               value={passwordConfirmation}
               type="password"
             />

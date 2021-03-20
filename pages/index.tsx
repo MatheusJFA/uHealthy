@@ -24,7 +24,7 @@ export default function Home() {
       const data = await response.json();
 
       localStorage.setItem("JWT", data.jwt);
-      return data;
+      Router.push('/vaccine');
     } catch (error) {
       throw new Error(`Erro: ${error.message}`);
     }
