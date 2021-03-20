@@ -21,12 +21,11 @@ model User {
 }
 
 model Vaccine {
-  id           Int           @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   name         String
   type         String
   manufacturer String
-  vaccineType  VaccineType 
-  vaccination  Vaccination[]
+  mandatory    Boolean
 }
 
 model Vaccination {
@@ -36,10 +35,4 @@ model Vaccination {
   vaccinationDate  DateTime @default(now())
   vaccinationLocal String?
   user             User     @relation(fields: [userId], references: [id])
-  vaccine          Vaccine  @relation(fields: [vaccineId], references: [id])
-}
-
-enum VaccineType {
-  MANDATORY
-  OTHERS
 }
