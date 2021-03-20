@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import Link from "next/link";
-<<<<<<< HEAD
 import Image from 'next/image';
 import Router from 'next/router';
-=======
 import Image from 'next/image'
 import Input from '../components/Input';
->>>>>>> frontend
 import styles from "../styles/Home.module.css";
 
 export default function Home() {

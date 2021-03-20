@@ -50,36 +50,6 @@ export default function Register() {
         <h1 className={styles.title}>Cadastre-se</h1>
         <form>
           <div className={styles.inputText}>
-            <div className={styles.fields}>
-              <input type="text" name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} maxLength="14" placeholder="XXX.XXX.XXX-XX" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
-                title="Digite o CPF no formato XXX.XXX.XXX-XX" />
-              <label htmlFor="cpf"> cpf </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="email" name="email" id="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="example@domain.com.br" required />
-              <label htmlFor="email"> email </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} placeholder=" " required />
-              <label htmlFor="name"> nome </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="date" name="birthDate" id="birthDate" value={birthDate} onChange={e => setBirthDate(e.target.value)} placeholder="DD/MM/AAAA" required />
-              <label htmlFor="birthDate"> data de nascimento </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="text" name="phone" id="phone" value={phone} onChange={e => setPhone(e.target.value)} placeholder=" " required />
-              <label htmlFor="phone"> telefone </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder=" " />
-              <label htmlFor="password"> senha </label>
-            </div>
-            <div className={styles.fields}>
-              <input type="password" name="passwordConfirmation" id="passwordConfirmation" value={passwordConfirmation} onChange={e => setPasswordConfirmation(e.target.value)} placeholder=" " />
-              <label htmlFor="passwordConfirmation"> confirmar senha </label>
-            </div>
-=======
             <Input
               label="cpf"
               id="cpf"
@@ -97,51 +67,51 @@ export default function Register() {
               value={email}
               type="email"
             />
-          
-             <Input 
-               label="name"
-               id="name"
-               onChange={e => setName(e.target.value)}
-               placeholder=" "
-               value={name}
-               type="text"
-             />
-              <Input
-               label="data de nascimento"
-               id="data"
-               onChange={e => setDate(e.target.value)}
-               placeholder=" "
-               value={date}
-               type="date"
-              />
 
-              <Input
-               label="Telefone"
-               id="phone"
-               onChange={e => setPhone(e.target.value)}
-               placeholder=" "
-               value={phone}
-               type="text"
-              />
-           
-              <Input
-               label="senha"
-               id="password"
-               onChange={e => setPassword(e.target.value)}
-               placeholder=" "
-               value={password}
-               type="password"
-              />
+            <Input
+              label="name"
+              id="name"
+              onChange={e => setName(e.target.value)}
+              placeholder=" "
+              value={name}
+              type="text"
+            />
+            <Input
+              label="data de nascimento"
+              id="data"
+              onChange={e => setDate(e.target.value)}
+              placeholder=" "
+              value={date}
+              type="date"
+            />
 
-              <Input
-               label="confirmar senha"
-               id="passwordConf"
-               onChange={e => setPasswordConfirmation(e.target.value)}
-               placeholder=" "
-               value={passwordConfirmation}
-               type="password"
-              />
-              
+            <Input
+              label="Telefone"
+              id="phone"
+              onChange={e => setPhone(e.target.value)}
+              placeholder=" "
+              value={phone}
+              type="text"
+            />
+
+            <Input
+              label="senha"
+              id="password"
+              onChange={e => setPassword(e.target.value)}
+              placeholder=" "
+              value={password}
+              type="password"
+            />
+
+            <Input
+              label="confirmar senha"
+              id="passwordConf"
+              onChange={e => setPasswordConfirmation(e.target.value)}
+              placeholder=" "
+              value={passwordConfirmation}
+              type="password"
+            />
+
           </div>
 
           <div className={styles.footerLogin}>
