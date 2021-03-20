@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import Image from 'next/image'
+import Input from '../components/Input';
 import styles from "../styles/Home.module.css";
+
 
 
 export default function Home() {
 
-  const[cpf, setCPF] = useState("");
-  const[password, setPassword] = useState("");
+  const [cpf, setCPF] = useState("");
+  const [password, setPassword] = useState("");
+
+  function checkDates() {
+    console.log(cpf,password);
+  }
 
   return (
     <div className={styles.vhFull}>
-      
-       
+
+
       <div className={styles.about}>
         <Image className={styles.imgLogo}
           src="/Logo.svg"
@@ -26,42 +32,50 @@ export default function Home() {
           <p>Aqui você poderá visualizar todas as vacinas que irá tomar e já tomou.</p>
         </div>
       </div>
-      
+
       <div className={styles.container}>
-      <Image
-        className={styles.imgLogin}
-        src="/landing.svg"
-        alt="Landing page image"
-        width="730"
-        height="530"
-        draggable="false"
-      />
+        <Image
+          className={styles.imgLogin}
+          src="/landing.svg"
+          alt="Landing page image"
+          width="730"
+          height="530"
+          draggable="false"
+        />
 
-      <div className={styles.login}>
-        <h1 className={styles.title} >Bem-vindo!</h1>
+        <div className={styles.login}>
+          <h1 className={styles.title} >Bem-vindo!</h1>
 
-        <div className={styles.inputText}>
-          <div className={styles.fields}>
-            <input type="text"  name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} placeholder="XXX.XXX.XXX-XX" />
-            <label htmlFor="cpf"> cpf </label>
+          <div className={styles.inputText}>
+            <Input
+              label="cpf"
+              id="cpf"
+              onChange={e => setCPF(e.target.value)}
+              placeholder="XXX.XXX.XXX-XX"
+              value={cpf}
+              type="text"
+            />
+            <Input
+             label="senha"
+             id="password"
+             onChange={e => setPassword(e.target.value)}
+             placeholder="Digite sua senha"
+             value={password}
+             type="password"
+            />
           </div>
-          <div className={styles.fields}>
-            <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" />
-            <label htmlFor="password"> senha </label>
+
+          <div className={styles.footerLogin}>
+
+            <h2>Não possui uma conta? <br />
+              <Link href="/register">
+                <a>Crie uma!</a>
+              </Link>
+            </h2>
+
+            <button className={styles.btnPrimary} onClick={checkDates} >Acessar</button>
+
           </div>
-        </div>
-       
-        <div className={styles.footerLogin}>
-
-          <h2>Não possui uma conta? <br />
-            <Link href="/register">
-              <a>Crie uma!</a>
-            </Link>
-          </h2>
-
-          <button className={styles.btnPrimary}>Acessar</button>
-
-        </div>
         </div>
       </div>
     </div>
