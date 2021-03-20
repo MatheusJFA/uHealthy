@@ -6,7 +6,9 @@ import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
 
 import * as Yup from 'yup';
+import Messages from "./messages";
 
+import CPFValidate from "../utils/cpfValidation";
 
 export default function Register() {
   const [cpf, setCPF] = useState("");
@@ -17,20 +19,42 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  async function Register(event) {
-    event.preventDefault();
-    const response = await fetch("/api/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+  function validate() : boolean {
+    var today = new Date();
+    const registerValidation = Yup.object().shape({
+      cpf: Yup.string().min(11).max(14).test(
+        "cpf validacao",
+        "Por favor, insira um CPF válido",
+        (value) => CPFValidate(value)
+      ).required(),
+      email: Yup.string().email().required(),
+      name: Yup.string().required(),
+      birthDate: Yup.date().required().max(today),
+      password: Yup.string().min(6).max(15).required(Messages.MSG_E003("Password")),
+      passwordConfirmation: Yup.string()
+        .oneOf([Yup.ref('password'), null], Messages.MSG_A000),
     });
 
-    const data = await response.json();
-    localStorage.setItem("JWT", data.jwt);
-    Router.push('/');
-    return data;
+    if (!(registerValidation.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;
+    return true;
+  }
+
+  async function Register(event) {
+    event.preventDefault();
+    if (validate()) {
+      const response = await fetch("/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+      });
+
+      const data = await response.json();
+      localStorage.setItem("JWT", data.jwt);
+      Router.push('/');
+      return data;
+    }
   }
 
 
