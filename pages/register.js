@@ -69,13 +69,14 @@ export default function Register() {
             />
 
             <Input
-              label="name"
+              label="nome"
               id="name"
               onChange={e => setName(e.target.value)}
               placeholder=" "
               value={name}
               type="text"
             />
+
             <Input
               label="data de nascimento"
               id="data"
@@ -86,7 +87,7 @@ export default function Register() {
             />
 
             <Input
-              label="Telefone"
+              label="telefone"
               id="phone"
               onChange={e => setPhone(e.target.value)}
               placeholder=" "
