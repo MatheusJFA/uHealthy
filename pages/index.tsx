@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import Image from 'next/image';
 import Router from 'next/router';
-import Image from 'next/image'
 import Input from '../components/Input';
 import styles from "../styles/Home.module.css";
 
@@ -14,7 +13,7 @@ export default function Home() {
   async function login(event) {
     event.preventDefault();
     try {
-      const response = await fetch("/api/usuario/login", {
+      const response = await fetch("/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

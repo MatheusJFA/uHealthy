@@ -19,7 +19,7 @@ export default function Register() {
 
   async function Register(event) {
     event.preventDefault();
-    const response = await fetch("/api/usuario/cadastro", {
+    const response = await fetch("/api/user/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
