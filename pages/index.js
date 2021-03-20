@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import Link from "next/link";
+<<<<<<< HEAD
 import Image from 'next/image';
 import Router from 'next/router';
+=======
+import Image from 'next/image'
+import Input from '../components/Input';
+>>>>>>> frontend
 import styles from "../styles/Home.module.css";
-
 
 export default function Home() {
 
@@ -81,6 +85,38 @@ export default function Home() {
               <button className={styles.btnPrimary} onClick={(e) => login(e)}>Acessar</button>
             </div>
           </form>
+          <h1 className={styles.title} >Bem-vindo!</h1>
+
+          <div className={styles.inputText}>
+            <Input
+              label="cpf"
+              id="cpf"
+              onChange={e => setCPF(e.target.value)}
+              placeholder="XXX.XXX.XXX-XX"
+              value={cpf}
+              type="text"
+            />
+            <Input
+             label="senha"
+             id="password"
+             onChange={e => setPassword(e.target.value)}
+             placeholder="Digite sua senha"
+             value={password}
+             type="password"
+            />
+          </div>
+
+          <div className={styles.footerLogin}>
+
+            <h2>Não possui uma conta? <br />
+              <Link href="/register">
+                <a>Crie uma!</a>
+              </Link>
+            </h2>
+
+            <button className={styles.btnPrimary} onClick={checkDates} >Acessar</button>
+
+          </div>
         </div>
       </div>
     </div>
