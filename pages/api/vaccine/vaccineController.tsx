@@ -28,7 +28,7 @@ export default async (request, response) => {
         });
 
         if (vaccineExists) {
-            return response.status(400).json({ error: Messages.MSG_E000("Vacina")});
+            return response.status(400).json({ error: Messages.MSG_E000("Vacina", false)});
         }
 
         // const vaccine = await prisma.vaccine.create({

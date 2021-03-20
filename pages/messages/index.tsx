@@ -1,5 +1,7 @@
+import { Message } from "yup/lib/types";
+
 export default class Messages {
-  public static readonly MSG_E000 = (field: string) => `${field} já cadastrado`;
+  public static readonly MSG_E000 = (field: string, maleGender: boolean = true) => `${field} já cadastrad${maleGender ? "o": "a"}`;
   public static readonly MSG_E001 = (field: string) => `${field} inexistente`;
   public static readonly MSG_E002 = (field: string) => `O campo ${field} é inválido!`;
   public static readonly MSG_E003 = (field: string) => `O campo ${field} é necessário!`;
