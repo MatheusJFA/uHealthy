@@ -55,67 +55,41 @@ export default function Home() {
           draggable="false"
         />
 
-        <div className={styles.login}>
-          <h1 className={styles.title}>Bem-vindo!</h1>
-
-          <form>
+        <form action="">
+          <div className={styles.login}>
+            <h1 className={styles.title} >Bem-vindo!</h1>
             <div className={styles.inputText}>
-              <div className={styles.fields}>
-                <input type="text" name="cpf" id="cpf" value={cpf} onChange={e => setCPF(e.target.value)} placeholder="XXX.XXX.XXX-XX" />
-                <label htmlFor="cpf"> cpf </label>
-              </div>
-              <div className={styles.fields}>
-                <input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" />
-                <label htmlFor="password"> senha </label>
-              </div>
+              <Input
+                label="cpf"
+                id="cpf"
+                onChange={e => setCPF(e.target.value)}
+                placeholder="XXX.XXX.XXX-XX"
+                value={cpf}
+                type="text"
+              />
+              <Input
+                label="senha"
+                id="password"
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Digite sua senha"
+                value={password}
+                type="password"
+              />
             </div>
 
             <div className={styles.footerLogin}>
 
-              <h2>Não possui uma conta?<br />
+              <h2>Não possui uma conta? <br />
                 <Link href="/register">
                   <a>Crie uma!</a>
                 </Link>
               </h2>
 
-              <button className={styles.btnPrimary} onClick={(e) => login(e)}>Acessar</button>
+              <button className={styles.btnPrimary} onClick={(e) => login(e)} >Acessar</button>
             </div>
-          </form>
-          <h1 className={styles.title} >Bem-vindo!</h1>
-
-          <div className={styles.inputText}>
-            <Input
-              label="cpf"
-              id="cpf"
-              onChange={e => setCPF(e.target.value)}
-              placeholder="XXX.XXX.XXX-XX"
-              value={cpf}
-              type="text"
-            />
-            <Input
-             label="senha"
-             id="password"
-             onChange={e => setPassword(e.target.value)}
-             placeholder="Digite sua senha"
-             value={password}
-             type="password"
-            />
           </div>
-
-          <div className={styles.footerLogin}>
-
-            <h2>Não possui uma conta? <br />
-              <Link href="/register">
-                <a>Crie uma!</a>
-              </Link>
-            </h2>
-
-            <button className={styles.btnPrimary} onClick={checkDates} >Acessar</button>
-
-          </div>
-        </div>
+        </form>
       </div>
     </div>
-
   )
 }

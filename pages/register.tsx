@@ -80,9 +80,9 @@ export default function Register() {
             <Input
               label="data de nascimento"
               id="data"
-              onChange={e => setDate(e.target.value)}
+              onChange={e => setBirthDate(e.target.value)}
               placeholder=" "
-              value={date}
+              value={birthDate}
               type="date"
             />
 
