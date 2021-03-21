@@ -36,9 +36,11 @@ export default function Home() {
         <Image className={styles.imgLogo}
           src="/Logo.svg"
           alt="uHealthy"
+          width={300}
+          height={125}
+          layout="intrinsic"
+          sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
           draggable="false"
-          width="300"
-          height="125"
         />
         <div className={styles.aboutText}>
           <p>uHealthy é seu cartão de vacinas digital.</p>
@@ -50,8 +52,10 @@ export default function Home() {
           className={styles.imgLogin}
           src="/landing.svg"
           alt="Landing page image"
-          width="730"
-          height="530"
+          width={730}
+          height={530}
+          layout="intrinsic"
+          sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
           draggable="false"
         />
 

@@ -132,7 +132,7 @@ export default function Register() {
               label="confirmar senha"
               id="passwordConfirmation"
               onChange={e => setPasswordConfirmation(e.target.value)}
-              placeholder=""
+              placeholder=" "
               value={passwordConfirmation}
               type="password"
             />

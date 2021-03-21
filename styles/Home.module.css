@@ -28,9 +28,11 @@
 }
 
 .imgLogin {
-width: 730px;
-height: 530px;
+width: 45.625rem;
+height: 33.125rem;
 }
+
+
 
 .fields {
   display: flex;
@@ -45,7 +47,6 @@ height: 530px;
 
 .login {
   min-width: 26.875rem;
-  min-height: 26.875rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -58,6 +59,7 @@ height: 530px;
   flex-direction: column;
   align-items: center;
   padding: 0 2rem;
+  margin: 3rem 0;
 }
 
 .footerLogin {
@@ -65,6 +67,8 @@ height: 530px;
   flex-direction: row;
   justify-content: space-between;
   margin: 0 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .btnPrimary {
@@ -75,8 +79,22 @@ height: 530px;
   border-radius: 5px;
 }
 
+@media (max-width:1368px) {
+  .login {
+    min-width: 20.875rem;
+  }
+}
+  
+  
+  @media (max-width:680px) {
 
+    .imgLogo {
+      width:300px;
+      height:125px;
+    }  
 
-@media (min-width:680px) {
+  .container {
+    flex-direction: column;
+  }
 
 }

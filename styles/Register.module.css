@@ -25,7 +25,6 @@
       
       .login {
         min-width: 26.875rem;
-        min-height: 26.875rem;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -57,6 +56,10 @@
       
       
       
-      @media (min-width:680px) {
+      @media (max-width:680px) {
       
+        .container {
+          flex-direction: column;
+        }
+
       }
