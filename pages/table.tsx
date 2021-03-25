@@ -15,9 +15,15 @@ export default function Table() {
                 <button className="btnPrimary" type="button"> Sair </button>
             </div>
 
+            <nav className="navbar">
+                <ul>
+                    <li><a href="#"> Vacinas Obrigatórias </a></li>
+                    <li><a href="#"> Vacinas de Campanhas </a></li>
+                </ul>
+            </nav>
+
             <div className="table-vacination">
                 <table>
-                    <caption>Vacinas Obrigatórias</caption>
                     <thead>
                         <tr>
                             <th scope="col">Vacinas</th>
