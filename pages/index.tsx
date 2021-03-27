@@ -4,29 +4,49 @@ import Image from 'next/image';
 import Router from 'next/router';
 import Input from '../components/Input';
 import styles from "../styles/Home.module.css";
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
+import Messages from './messages';
 
 export default function Home() {
 
   const [cpf, setCPF] = useState("");
   const [password, setPassword] = useState("");
 
+  async function validate() {
+    const schema = Yup.object().shape({
+      cpf: Yup.string().min(11).max(14).required(Messages.MSG_E002("CPF")),
+      password: Yup.string().required(Messages.MSG_E004("Senha", 6, 15))
+    });
+
+    if (!(await schema.isValid({ cpf, password }))) return false;
+
+    return true;
+  }
+
   async function login(event) {
     event.preventDefault();
     try {
-      const response = await fetch("/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ cpf, password })
-      });
+      if (validate()) {
+        const response = await fetch("/api/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ cpf, password })
+        });
 
-      const data = await response.json();
-
-      localStorage.setItem("JWT", data.jwt);
-      Router.push('/vaccine');
+        const data = await response.json();
+        if (data.error)
+          toast.error(data.error);
+        else {
+          toast.success(Messages.MSG_S001);
+          localStorage.setItem("JWT", data.jwt);
+          Router.push('/table');
+        }
+      }
     } catch (error) {
-      throw new Error(`Erro: ${error.message}`);
+      toast.error(error);
     }
   }
 
