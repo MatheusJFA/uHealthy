@@ -21,7 +21,6 @@ export default function Register() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   async function validate() {
-    var today = new Date();
     const schema = Yup.object().shape({
       cpf: Yup.string().test(
         "CPF",
@@ -41,7 +40,7 @@ export default function Register() {
         .validate({ cpf, email, name, birthDate, password, passwordConfirmation }, { abortEarly: false })
         .catch(errors => {
           errors.inner.map(error => {
-            errorsList.push("• " +error.message);
+            errorsList.push("• " + error.message);
             return { field: error.path, message: error.message };
           });
         });
@@ -49,17 +48,13 @@ export default function Register() {
       toast.error(error);
     }
 
-    var errorText = errorsList
-
-    console.log(Messages.MSG_ERROR(errorText));
-    toast.error(Messages.MSG_ERROR(errorText));
+    toast.error(Messages.MSG_ERROR(errorsList));
 
     if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation })))
       return false;
 
     return true;
   }
-
 
   async function Register(event) {
     try {

@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 
 import { PrismaClient, Prisma } from '@prisma/client';
 import Messages from "../../messages";
-import { toast } from "react-toastify";
 
 const prisma = new PrismaClient();
 
