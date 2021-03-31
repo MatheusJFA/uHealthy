@@ -18,6 +18,8 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-toastify": "^7.0.3",
+    "remask": "0.1.0-alpha.5",
+    "vanilla-masker": "^1.2.0",
     "vercel": "^21.3.3",
     "yup": "^0.32.9"
   },
