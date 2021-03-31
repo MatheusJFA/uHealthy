@@ -7,6 +7,7 @@ import styles from "../styles/Home.module.css";
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import Messages from './messages';
+import { mask ,unMask } from 'remask'
 
 export default function Home() {
 
@@ -86,7 +87,7 @@ export default function Home() {
               <Input
                 label="cpf"
                 id="cpf"
-                onChange={e => setCPF(e.target.value)}
+                onChange={e => setCPF(mask(unMask(e.target.value),['999.999.999-99']))}
                 placeholder="XXX.XXX.XXX-XX"
                 value={cpf}
                 type="text"
