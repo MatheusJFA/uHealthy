@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import Messages from "./messages";
 
 import CPFValidate from "../utils/cpfValidation";
-import  {mask,unMask} from "remask";
+import { mask, unMask } from "remask";
 import { toast } from "react-toastify";
 
 export default function Register() {
@@ -104,7 +104,7 @@ export default function Register() {
             <Input
               label="cpf"
               id="cpf"
-              onChange={e => setCPF(mask(unMask(e.target.value),['999.999.999-99']))}
+              onChange={e => setCPF(mask(e.target.value, ['999.999.999-99']))}
               placeholder="XXX.XXX.XXX-XX"
               value={cpf}
               type="text"
@@ -140,7 +140,7 @@ export default function Register() {
             <Input
               label="telefone"
               id="phone"
-              onChange={e => setPhone(mask(unMask(e.target.value),['(99) 9999-9999','(99) 9 9999-9999']))}
+              onChange={e => setPhone(mask(e.target.value, ['(99) 9999-9999', '(99) 99999-9999', '(99) 9 9999-9999']))}
               placeholder="(XX)XXXX-XXXX"
               value={phone}
               type="text"
