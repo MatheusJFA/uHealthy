@@ -10,12 +10,6 @@
   --textColor: #434343;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 body {
   @apply h-screen;
   font-family: 'Fira Sans', sans-serif;
@@ -48,32 +42,6 @@ label {
   margin-left: 0.3rem;
 }
 
-input:placeholder-shown + label {
-  cursor: text;
-  max-width: 66.66%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transform-origin: left bottom;
-  transform:translate(0 , 1.6rem) scale(1.2);
-}
-
-::-webkit-input-placeholder {
-  opacity: 0;
-  transition: inherit;
-}
-
-input:focus::-webkit-input-placeholder {
-  opacity: 1;
-}
-
-input:not(:placeholder-shown) + label,
-input:focus + label {
-  color: var(--textColor);
-  transform: translate(0, 0) scale(1);
-  cursor: pointer;
-}
-
 input {
   width: 100%;
   border: none;
@@ -88,9 +56,33 @@ input:focus {
   outline: none; 
 }
 
+input:focus::placeholder {
+  opacity: 1;
+}
+
 input::placeholder{
   color: var(--textColor);
+  opacity:0;
+  transition: inherit;
 }
+
+input:not(:placeholder-shown) + label,
+input:focus + label {
+  color: var(--textColor);
+  transform: translate(0, 0) scale(1);
+  cursor: pointer;
+}
+
+input:placeholder-shown + label {
+  cursor: text;
+  max-width: 66.66%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left bottom;
+  transform:translate(0 , 1.6rem) scale(1.2);
+}
+
 
 h1 {
   text-align: center;
