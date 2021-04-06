@@ -52,6 +52,16 @@ input {
   background-color: transparent;
 }
 
+input:placeholder-shown + label {
+  cursor: text;
+  max-width: 66.66%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left bottom;
+  transform:translate(0 , 1.6rem) scale(1.2);
+}
+
 input:focus {
   outline: none; 
 }
@@ -71,16 +81,6 @@ input:focus + label {
   color: var(--textColor);
   transform: translate(0, 0) scale(1);
   cursor: pointer;
-}
-
-input:placeholder-shown + label {
-  cursor: text;
-  max-width: 66.66%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transform-origin: left bottom;
-  transform:translate(0 , 1.6rem) scale(1.2);
 }
 
 
