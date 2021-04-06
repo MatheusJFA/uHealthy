@@ -17,7 +17,7 @@
 }
 
 body {
-  max-height: 100vh;
+  @apply h-screen;
   font-family: 'Fira Sans', sans-serif;
   font-family: 'Rubik', sans-serif;
   background-color: var(--secondary);

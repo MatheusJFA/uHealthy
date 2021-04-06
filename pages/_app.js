@@ -3,7 +3,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
 import "../styles/Table.css";
-import 'tailwindcss/tailwind.css'
 
 
 toast.configure();
