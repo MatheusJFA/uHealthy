@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;400;500;600&family=Rubik:wght@300;400;500;600&display=swap');
 
 :root {
@@ -6,18 +10,18 @@
   --textColor: #434343;
 }
 
-*, 
-html,
 body {
-  max-height: 100vh;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  @apply h-screen;
   font-family: 'Fira Sans', sans-serif;
   font-family: 'Rubik', sans-serif;
   background-color: var(--secondary);
 }
 
+footer {
+  text-align: center;
+  font-size: 0.7em;
+
+}
 
 button {
   transition: 0.2s;
@@ -43,6 +47,16 @@ label {
   margin-left: 0.3rem;
 }
 
+input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  font-size: 1em;
+  padding-bottom: 0.5rem;
+  padding-left: 0.3rem;
+  background-color: transparent;
+}
+
 input:placeholder-shown + label {
   cursor: text;
   max-width: 66.66%;
@@ -53,13 +67,18 @@ input:placeholder-shown + label {
   transform:translate(0 , 1.6rem) scale(1.2);
 }
 
-::-webkit-input-placeholder {
-  opacity: 0;
-  transition: inherit;
+input:focus {
+  outline: none; 
 }
 
-input:focus::-webkit-input-placeholder {
+input:focus::placeholder {
   opacity: 1;
+}
+
+input::placeholder{
+  color: var(--textColor);
+  opacity:0;
+  transition: inherit;
 }
 
 input:not(:placeholder-shown) + label,
@@ -69,24 +88,6 @@ input:focus + label {
   cursor: pointer;
 }
 
-
-
-input {
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid var(--primary);
-  font-size: 1em;
-  padding-bottom: 0.5rem;
-  padding-left: 0.3rem;
-}
-
-input:focus {
-  outline: none; 
-}
-
-input::placeholder{
-  color: var(--textColor);
-}
 
 h1 {
   text-align: center;
