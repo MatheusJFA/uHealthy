@@ -6,7 +6,8 @@ import * as Yup from 'yup';
 import { PrismaClient, Prisma } from '@prisma/client';
 import authService from '../../../services/auth';
 import authConfig from '../../../config/auth';
-import Messages from "../../messages";
+
+import Messages from '../../../utils/messages';
 
 const prisma = new PrismaClient();
 
@@ -18,7 +19,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).json({ error: Messages.MSG_A002 });
+      return response.status(400).json({ error: Messages.MSG_E000 });
     }
 
     const { email, password } = request.body;

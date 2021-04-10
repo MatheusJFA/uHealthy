@@ -3,12 +3,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
 
+import Messages from '../../../utils/messages';
+
 import { PrismaClient, Prisma } from '@prisma/client';
-import Messages from "../../messages";
 
 const prisma = new PrismaClient();
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
+  
   try {
     var today = new Date();
 
