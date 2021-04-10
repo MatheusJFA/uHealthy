@@ -6,7 +6,6 @@ import Input from '../components/Input';
 import styles from "../styles/Home.module.css";
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import Messages from './messages';
 import { mask, unMask } from 'remask'
 
 export default function Home() {

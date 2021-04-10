@@ -6,7 +6,6 @@ import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
 
 import * as Yup from 'yup';
-import Messages from "./messages";
 
 import CPFValidate from "../utils/cpfValidation";
 import { mask, unMask } from "remask";
