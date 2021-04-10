@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Router from 'next/router';
 import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
-import Messages from '../utils/messages';
 
 import * as Yup from 'yup';
+
+import Messages from "../utils/messages";
 
 import CPFValidate from "../utils/cpfValidation";
 import { mask, unMask } from "remask";

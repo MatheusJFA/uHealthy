@@ -8,10 +8,9 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { mask, unMask } from 'remask'
 
-import Messages from '../utils/messages';
+import Messages from "../utils/messages";
 
 export default function Home() {
-
   const [cpf, setCPF] = useState("");
   const [password, setPassword] = useState("");
 
