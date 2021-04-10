@@ -1,6 +1,8 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Footer from '../components/Footer';
+
 import "../styles/globals.css";
 import "../styles/Table.css";
 
@@ -21,7 +23,9 @@ function MyApp({ Component, pageProps }) {
         closeOnClick={false}
         draggable={false}
         rtl={false} />
+      <Footer />
     </>
+
   );
 
 }

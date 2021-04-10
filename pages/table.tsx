@@ -8,7 +8,7 @@ export default function Table() {
                 <div className="nav-page">
                     <img className="user-perfil" src="../man.svg" alt="Imagem padrão de usuário" />
                     <div>
-                        <div className="user-name">Boca de Sacola</div>
+                        <div className="user-name">Vinícius Marinho</div>
                         <div className="user-id">123.456.890-12</div>
                     </div>
                 </div>

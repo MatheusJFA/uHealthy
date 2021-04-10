@@ -17,6 +17,11 @@ body {
   background-color: var(--secondary);
 }
 
+footer {
+  text-align: center;
+  font-size: 0.7em;
+
+}
 
 button {
   transition: 0.2s;
