@@ -1,9 +1,11 @@
 {
   "env": {
+    "cleanUrls": true,
     "DATABASE_URL": "@database_url"
   },
   "build": {
     "env": {
+      "cleanUrls": true,
       "DATABASE_URL": "@database_url"
     }
   }
