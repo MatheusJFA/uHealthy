@@ -22,13 +22,13 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
+  function ValidateCPF() : boolean{
+    return CPFValidate(cpf);
+  }
+
   async function validate() {
     const schema = Yup.object().shape({
-      cpf: Yup.string().test(
-        "CPF",
-        Messages.MSG_E003("CPF"),
-        (cpf) => CPFValidate(cpf)
-      ).required(Messages.MSG_E003("CPF")),
+      cpf: Yup.string().required(Messages.MSG_E003("CPF")),
       email: Yup.string().email(Messages.MSG_E003("Email")).required(),
       name: Yup.string().required(Messages.MSG_E003("Nome")),
       password: Yup.string().min(6).max(15).required(Messages.MSG_E003("Password")),
@@ -50,17 +50,19 @@ export default function Register() {
       toast.error(error);
     }
 
-    toast.error(Messages.MSG_ERROR(errorsList));
+    if(errorsList == null)
+     toast.error(Messages.MSG_ERROR(errorsList));
 
-    if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation })))
-      return false;
+    if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;
 
     return true;
   }
 
   async function Register(event) {
+    event.preventDefault();
     try {
-      event.preventDefault();
+      if(!ValidateCPF())
+        return toast.error(Messages.MSG_CPF_ERROR);
       if (await validate()) {
         const response = await fetch("/api/user/register", {
           method: "POST",
@@ -70,14 +72,13 @@ export default function Register() {
           body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
         });
 
-        const data = await response.json();
-        if (data.error) {
-          toast.error(data.error);
-        } else {
+        const result = await response.json();
+        if (result) 
+          return toast.error(result); 
+        else {
           toast.success(Messages.MSG_S000);
-          localStorage.setItem("JWT", data.jwt);
           Router.push('/');
-          return data;
+          return result;
         }
       }
     } catch (error) {

@@ -6,6 +6,10 @@ const Messages = {
   MSG_E004: (field: string, min: number, max: number) => `O campo ${field} deve ter no mínimo ${min} e no máximo ${max} caracteres!`,
   MSG_E005: "Usuário ou senha inválidos",
   MSG_E006: "Usuário não autorizado",
+  MSG_E007: "Usuário não encontrado",
+
+
+  MSG_CPF_ERROR: "O CPF digitado não é valido!",
   MSG_ERROR: (field: string[]) => `Favor verificar os seguintes campos: 
                                                               ${field.join("\n").replace(",", "\n")}`,
   MSG_A000: "As senhas devem coincidir!",

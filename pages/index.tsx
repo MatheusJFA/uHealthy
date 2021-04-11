@@ -37,12 +37,13 @@ export default function Home() {
           body: JSON.stringify({ cpf, password })
         });
 
-        const data = await response.json();
-        if (data.error)
-          toast.error(data.error);
+        const result = await response.json();
+
+        if (result.error) 
+          toast.error(result.error);
         else {
           toast.success(Messages.MSG_S001);
-          localStorage.setItem("JWT", data.jwt);
+          localStorage.setItem("JWT", result.token);
           Router.push('/table');
         }
       }

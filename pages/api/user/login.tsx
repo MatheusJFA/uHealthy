@@ -19,35 +19,31 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).json({ error: Messages.MSG_E000 });
+      return response.status(400).send(Messages.MSG_E000);
     }
 
-    const { email, password } = request.body;
+    const { cpf, password } = request.body;
 
-    const usuario = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
-        email,
+        cpf,
       },
     });
 
-    if (!usuario) {
-      return response.status(400).json({ error: 'Não foi encontrado um usuário com este email' });
+    if (!user) {
+      return response.status(400).json({ error: Messages.MSG_E007 });
     }
 
-    if (!(await authService.checkPassword(password, usuario.password))) {
-      return response.status(401).json({ error: 'Password does not match' });
+    if (!(await authService.checkPassword(password, user.password))) {
+      return response.status(401).json({ error: Messages.MSG_E005 });
     }
-
-    const { id, name } = usuario;
 
     await prisma.$disconnect();
 
-    return response.status(200).json({
-      usuario: {
-        name,
-        email,
-      },
-      token: jwt.sign({ id }, authConfig.secret, {
+    const { id, name, email } = user;
+
+    return response.status(200).send({
+      token: jwt.sign({ id, user }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),
     });
