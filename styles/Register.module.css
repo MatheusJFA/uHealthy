@@ -1,29 +1,12 @@
-.container {
-    min-height: 100vh;
-    padding: 0 0.5rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  
-.imgLogin {
-    width: 730px;
-    height: 530px;
-    }
-    
     .fields {
       display: flex;
       flex-flow: column-reverse;
       margin-bottom:1rem;
       width: 100%;
     }
-
-    .title {
-        margin: 2rem 0;
-      }
       
       .login {
+        margin-top: 3rem;
         min-width: 26.875rem;
         display: flex;
         flex-direction: column;
@@ -58,6 +41,11 @@
       
       @media (max-width:680px) {
       
+        .imgLogo {
+          width:300px;
+          height:125px;
+        } 
+
         .container {
           flex-direction: column;
         }

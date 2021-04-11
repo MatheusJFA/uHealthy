@@ -52,8 +52,8 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.vhFull}>
-      <div className={styles.about}>
+    <>
+      <div className="flex flex-col justify-center mt-5">
         <Image className={styles.imgLogo}
           src="/Logo.svg"
           alt="uHealthy"
@@ -63,24 +63,22 @@ export default function Home() {
           sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
           draggable="false"
         />
-        <div className={styles.aboutText}>
+        <div className="font-medium tracking-widest	 flex justify-center">
           <p>uHealthy é seu cartão de vacinas digital.</p>
         </div>
       </div>
 
       <div className={styles.container}>
+
         <Image
-          className={styles.imgLogin}
           src="/landing.svg"
           alt="Landing page image"
-          width={730}
-          height={530}
-          layout="intrinsic"
-          sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
+          width={700}
+          height={500}
           draggable="false"
         />
 
-        <form action="">
+        <form action="" className="mt-20 mb-20 md:mb-10 md:mt-10">
           <div className={styles.login}>
             <h1 className={styles.title} >Bem-vindo!</h1>
             <div className={styles.inputText}>
@@ -115,6 +113,6 @@ export default function Home() {
           </div>
         </form>
       </div>
-    </div>
+    </>
   )
 }

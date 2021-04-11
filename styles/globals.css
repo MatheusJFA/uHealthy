@@ -17,10 +17,13 @@ body {
   background-color: var(--secondary);
 }
 
+#__next {
+  @apply h-screen flex flex-col justify-between;
+}
+
 footer {
   text-align: center;
   font-size: 0.7em;
-
 }
 
 button {
