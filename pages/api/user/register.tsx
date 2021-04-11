@@ -3,12 +3,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
 
+import Messages from '../../../utils/messages';
+
 import { PrismaClient, Prisma } from '@prisma/client';
-import Messages from "../../messages";
 
 const prisma = new PrismaClient();
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
+  
   try {
     var today = new Date();
 
@@ -43,7 +45,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   
       birthDate = new Date(birthDate).toISOString() as any;
   
-      const usuario = await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           cpf,
           name,
@@ -54,11 +56,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         },
       });
   
-      delete usuario.password;
+      delete user.password;
   
       await prisma.$disconnect()
   
-      return response.status(200).send({ usuario });
+      return response.status(200).send({ usuario: user });
     }
   } catch (error) {
     response.status(500).json({ error: error });

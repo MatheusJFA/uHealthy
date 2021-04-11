@@ -1,6 +1,18 @@
-import React, { useState } from 'react';
+import Router from 'next/router';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import Messages from '../utils/messages';
 
 export default function Table() {
+    useEffect(() => {
+        var jwt = localStorage.getItem("JWT");
+
+        if (jwt === undefined) {
+            toast.error(Messages.MSG_E006);
+            Router.push('/');
+        } 
+    }, []);
+
 
     return (
         <>
