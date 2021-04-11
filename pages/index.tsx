@@ -28,7 +28,7 @@ export default function Home() {
   async function login(event) {
     event.preventDefault();
     try {
-      if (validate()) {
+      if (await validate()) {
         const response = await fetch("/api/user/login", {
           method: "POST",
           headers: {
