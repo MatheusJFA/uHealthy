@@ -25,6 +25,11 @@ export default function Table() {
         } 
     }, []);
 
+    function LogOut(){
+        toast.success(Messages.MSG_S002);
+        localStorage.removeItem("JWT");
+        Router.push('/');
+    }
 
     return (
         <>
@@ -36,7 +41,7 @@ export default function Table() {
                         <div className="user-id">{cpf}</div>
                     </div>
                 </div>
-                <button className="btnPrimary" type="button"> Sair </button>
+                <button className="btnPrimary" type="button" onClick={() => LogOut()}> Sair </button>
             </div>
 
             <nav className="navbar">

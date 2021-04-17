@@ -109,7 +109,7 @@ export default function Home() {
                 </Link>
               </h2>
 
-              <button className={styles.btnPrimary} onClick={(e) => login(e)} >Acessar</button>
+              <button className={styles.btnPrimary} onClick={(event) => login(event)} >Acessar</button>
             </div>
           </div>
         </form>

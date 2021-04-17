@@ -17,6 +17,7 @@ const Messages = {
   MSG_A002: "A validação falhou!",
   MSG_S000: "Usuário cadastrado com sucesso",
   MSG_S001: "Login realizado com sucesso",
+  MSG_S002: "Usuário deslogado com sucesso",
 }
 
 export default Messages;
