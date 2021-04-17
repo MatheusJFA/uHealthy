@@ -40,10 +40,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    const { id, name, email } = user;
+    const { id, name, email, } = user;
 
     return response.status(200).send({
-      token: jwt.sign({ id, user }, authConfig.secret, {
+      token: jwt.sign({ id, name, email, cpf }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),
     });

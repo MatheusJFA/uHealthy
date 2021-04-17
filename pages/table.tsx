@@ -3,11 +3,23 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Messages from '../utils/messages';
 
-export default function Table() {
-    useEffect(() => {
-        var jwt = localStorage.getItem("JWT");
+import { env } from "process";
+import jwt from 'jsonwebtoken';
 
-        if (jwt === undefined) {
+
+export default function Table() {
+    const [name, setName] = useState("");
+    const [cpf, setCPF] = useState("");
+
+    useEffect(() => {
+        var jwtData = localStorage.getItem("JWT");
+
+        const data = jwt.decode(jwtData);
+
+        setName(data.name);
+        setCPF(data.cpf);
+
+        if (jwtData === undefined) {
             toast.error(Messages.MSG_E006);
             Router.push('/');
         } 
@@ -20,8 +32,8 @@ export default function Table() {
                 <div className="nav-page">
                     <img className="user-perfil" src="../man.svg" alt="Imagem padrão de usuário" />
                     <div>
-                        <div className="user-name">Vinícius Marinho</div>
-                        <div className="user-id">123.456.890-12</div>
+                        <div className="user-name">{name}</div>
+                        <div className="user-id">{cpf}</div>
                     </div>
                 </div>
                 <button className="btnPrimary" type="button"> Sair </button>

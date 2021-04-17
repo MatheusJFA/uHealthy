@@ -22,7 +22,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  function ValidateCPF() : boolean{
+  function ValidateCPF(): boolean {
     return CPFValidate(cpf);
   }
 
@@ -50,8 +50,8 @@ export default function Register() {
       toast.error(error);
     }
 
-    if(errorsList == null)
-     toast.error(Messages.MSG_ERROR(errorsList));
+    if (errorsList == null)
+      toast.error(Messages.MSG_ERROR(errorsList));
 
     if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;
 
@@ -61,135 +61,137 @@ export default function Register() {
   async function Register(event) {
     event.preventDefault();
     try {
-      if(!ValidateCPF())
+      if (!ValidateCPF())
         return toast.error(Messages.MSG_CPF_ERROR);
-      if (await validate()) {
-        const response = await fetch("/api/user/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
-        });
 
-        const result = await response.json();
-        if (result) 
-          return toast.error(result); 
-        else {
-          toast.success(Messages.MSG_S000);
-          Router.push('/');
-          return result;
-        }
+      await validate();
+
+      const response = await fetch("/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+      });
+
+      const result = await response.json();
+
+      if (result.error)
+        toast.error(result.error);
+      else {
+        toast.success(Messages.MSG_S000);
+        Router.push('/');
+        return result;
       }
     } catch (error) {
-      toast.error(error);
-    }
+    toast.error(error);
   }
+}
 
 
-  return (
-    <>
-      <div className="flex flex-col justify-center mt-5">
-        <Image className=""
-          src="/Logo.svg"
-          alt="uHealthy"
-          width={300}
-          height={125}
-          layout="intrinsic"
-          sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
-          draggable="false"
-        />
-        <div className="font-medium tracking-widest	 flex justify-center">
-          <p>uHealthy é seu cartão de vacinas digital.</p>
-        </div>
+return (
+  <>
+    <div className="flex flex-col justify-center mt-5">
+      <Image className=""
+        src="/Logo.svg"
+        alt="uHealthy"
+        width={300}
+        height={125}
+        layout="intrinsic"
+        sizes="(max-width:767px 33vw,(max-width:568px) 50vw,100vw)"
+        draggable="false"
+      />
+      <div className="font-medium tracking-widest	 flex justify-center">
+        <p>uHealthy é seu cartão de vacinas digital.</p>
       </div>
+    </div>
 
-      <div className="flex flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
+    <div className="flex flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
 
-        <Image
-          className={styles.imgLogin}
-          src="/cadastro.svg"
-          alt="Landing page image"
-          width="730"
-          height="530"
-          draggable="false"
-        />
+      <Image
+        className={styles.imgLogin}
+        src="/cadastro.svg"
+        alt="Landing page image"
+        width="730"
+        height="530"
+        draggable="false"
+      />
 
-        <div className={styles.login}>
-          <h1 className="mt-10 mb-5 md:mt-3 md:mb-3">Cadastre-se</h1>
-          <form>
-            <div className={styles.inputText}>
-              <Input
-                label="cpf"
-                id="cpf"
-                onChange={e => setCPF(mask(e.target.value, ['999.999.999-99']))}
-                placeholder="XXX.XXX.XXX-XX"
-                value={cpf}
-                type="text"
-              />
+      <div className={styles.login}>
+        <h1 className="mt-10 mb-5 md:mt-3 md:mb-3">Cadastre-se</h1>
+        <form>
+          <div className={styles.inputText}>
+            <Input
+              label="cpf"
+              id="cpf"
+              onChange={e => setCPF(mask(e.target.value, ['999.999.999-99']))}
+              placeholder="XXX.XXX.XXX-XX"
+              value={cpf}
+              type="text"
+            />
 
-              <Input
-                label="email"
-                id="email"
-                onChange={e => setEmail(e.target.value)}
-                placeholder="example@domain.com.br"
-                value={email}
-                type="email"
-              />
+            <Input
+              label="email"
+              id="email"
+              onChange={e => setEmail(e.target.value)}
+              placeholder="example@domain.com.br"
+              value={email}
+              type="email"
+            />
 
-              <Input
-                label="nome"
-                id="name"
-                onChange={e => setName(e.target.value)}
-                placeholder=" "
-                value={name}
-                type="text"
-              />
+            <Input
+              label="nome"
+              id="name"
+              onChange={e => setName(e.target.value)}
+              placeholder=" "
+              value={name}
+              type="text"
+            />
 
-              <Input
-                label="data de nascimento"
-                id="data"
-                onChange={e => setBirthDate(e.target.value)}
-                placeholder=" "
-                value={birthDate}
-                type="date"
-              />
+            <Input
+              label="data de nascimento"
+              id="data"
+              onChange={e => setBirthDate(e.target.value)}
+              placeholder=" "
+              value={birthDate}
+              type="date"
+            />
 
-              <Input
-                label="telefone"
-                id="phone"
-                onChange={e => setPhone(mask(e.target.value, ['(99) 9999-9999', '(99) 99999-9999', '(99) 9 9999-9999']))}
-                placeholder="(XX)XXXX-XXXX"
-                value={phone}
-                type="text"
-              />
+            <Input
+              label="telefone"
+              id="phone"
+              onChange={e => setPhone(mask(e.target.value, ['(99) 9999-9999', '(99) 99999-9999', '(99) 9 9999-9999']))}
+              placeholder="(XX)XXXX-XXXX"
+              value={phone}
+              type="text"
+            />
 
-              <Input
-                label="senha"
-                id="password"
-                onChange={e => setPassword(e.target.value)}
-                placeholder=" "
-                value={password}
-                type="password"
-              />
+            <Input
+              label="senha"
+              id="password"
+              onChange={e => setPassword(e.target.value)}
+              placeholder=" "
+              value={password}
+              type="password"
+            />
 
-              <Input
-                label="confirmar senha"
-                id="passwordConfirmation"
-                onChange={e => setPasswordConfirmation(e.target.value)}
-                placeholder=" "
-                value={passwordConfirmation}
-                type="password"
-              />
+            <Input
+              label="confirmar senha"
+              id="passwordConfirmation"
+              onChange={e => setPasswordConfirmation(e.target.value)}
+              placeholder=" "
+              value={passwordConfirmation}
+              type="password"
+            />
 
-            </div>
+          </div>
 
-            <div className={styles.footerLogin}>
-              <button className={styles.btnPrimary} onClick={(event) => Register(event)}>Cadastrar</button>
-            </div>
-          </form>
-        </div>
+          <div className={styles.footerLogin}>
+            <button className={styles.btnPrimary} onClick={(event) => Register(event)}>Cadastrar</button>
+          </div>
+        </form>
       </div>
-    </>
-  )
+    </div>
+  </>
+)
 }
