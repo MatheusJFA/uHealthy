@@ -10,22 +10,38 @@ import jwt from 'jsonwebtoken';
 export default function Table() {
     const [name, setName] = useState("");
     const [cpf, setCPF] = useState("");
+    const [id, setID] = useState("");
 
     useEffect(() => {
         var jwtData = localStorage.getItem("JWT");
 
         const data = jwt.decode(jwtData);
-
         setName(data.name);
         setCPF(data.cpf);
+        setID(data.id);
 
         if (jwtData === undefined) {
             toast.error(Messages.MSG_E006);
             Router.push('/');
-        } 
+        }
     }, []);
 
-    function LogOut(){
+    useEffect(() => {
+        async function getVaccines() {
+            console.log(id);
+            const response = await fetch(`/api/vaccination`,{
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+          });
+        }
+        getVaccines();
+    }, [])
+
+
+    function LogOut() {
         toast.success(Messages.MSG_S002);
         localStorage.removeItem("JWT");
         Router.push('/');

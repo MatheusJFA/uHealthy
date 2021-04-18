@@ -200,6 +200,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    return response.status(200).send(Messages.MSG_S002);
+    return response.status(200).send(Messages.MSG_S003);
   }
 }
