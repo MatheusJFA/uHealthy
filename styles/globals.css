@@ -18,24 +18,13 @@ body {
 }
 
 #__next {
-  @apply h-screen flex flex-col justify-between;
+  @apply h-screen flex flex-col;
 }
 
 footer {
   text-align: center;
   font-size: 0.7em;
 }
-
-button {
-  transition: 0.2s;
-}
-
-button:hover {
-  cursor: pointer;
-  box-shadow: 2px 2px 2px #bdbdbd;
-  transition: 0.2s;
-}
-
 
 
 label,input,input[type='email'],input[type='password']  {
