@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'
 import { toast } from 'react-toastify';
 import Messages from '../utils/messages';
 
@@ -17,7 +18,7 @@ export default function Table() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function Inicializar() {
+    async function Verification() {
       var jwtData = localStorage.getItem("JWT");
       const data = await jwt.decode(jwtData);
 
@@ -31,7 +32,7 @@ export default function Table() {
       }
       setLoading(true);
     }
-    Inicializar();
+    Verification();
   }, []);
 
 
@@ -45,10 +46,18 @@ export default function Table() {
       else
         setVaccines(data);
     }
-      if(loading) 
+    if (loading)
       GetVaccines();
   }, [loading])
 
+  async function Register() {
+
+  }
+
+
+  async function Delete() {
+
+  }
 
   function LogOut() {
     toast.success(Messages.MSG_S002);
@@ -66,7 +75,7 @@ export default function Table() {
             <div className="user-id">{cpf}</div>
           </div>
         </div>
-        <button className="btnPrimary" type="button" onClick={() => LogOut()}> Sair </button>
+        <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => LogOut()}> Sair </button>
       </div>
 
       <nav className="navbar">
@@ -76,46 +85,59 @@ export default function Table() {
         </ul>
       </nav>
 
-      {vaccines.length === 0 &&
+      {loading && vaccines.length === 0 &&
         <>
           <p>Este usuário não possui nenhuma vacina cadastrada!</p>
         </>
       }
 
       {loading && vaccines.length > 0 &&
-        <div className="table-vacination">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Vacinas</th>
-                <th scope="col">Proteção Contra</th>
-                <th scope="col">Idade Recomendada</th>
-                <th scope="col">1º Dose Data</th>
-                <th scope="col">2º Dose Data</th>
-                <th scope="col">3º Dose Data</th>
-                <th scope="col">1º Reforço Data</th>
-                <th scope="col">2º Reforço Data</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              {vaccines.map((vaccine) => {
+        <div className="flex-grow">
+          <div className="table-vacination">
+            <table>
+              <thead>
                 <tr>
-                  <td scope="row" data-label="Vacinas">{vaccine.vaccineName}</td>
-                  <td data-label="Proteção Contra">{vaccine.vaccineType}</td>
-                  <td data-label="Fabricante">{vaccine.vaccineManufacturer}</td>
-                  <td data-label="DataVacinacao">{vaccine.vaccinationDate}</td>
-                  <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
-
-                  {vaccine.vaccineDoses.map((dose, index) => {
-                    <td data-label={`${index + 1}º Dose Data`}>{dose}</td>
-                  })}
+                  <th scope="col">Vacinas</th>
+                  <th scope="col">Proteção Contra</th>
+                  <th scope="col">Fabricante</th>
+                  <th scope="col">Data Vacinação</th>
+                  <th scope="col">Local Vacinação</th>
+                  <th scope="col">1º Dose Data</th>
+                  <th scope="col">2º Dose Data</th>
+                  <th scope="col">3º Dose Data</th>
+                  <th scope="col">1º Reforço Data</th>
+                  <th scope="col">2º Reforço Data</th>
                 </tr>
-              })};
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+
+                {vaccines.map((vaccine) => {
+                  <tr>
+                    <td scope="row" data-label="Vacinas">{vaccine.vaccineName}</td>
+                    <td data-label="Proteção Contra">{vaccine.vaccineType}</td>
+                    <td data-label="Fabricante">{vaccine.vaccineManufacturer}</td>
+                    <td data-label="DataVacinacao">{vaccine.vaccinationDate}</td>
+                    <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
+
+                    {vaccine.vaccineDoses.map((dose, index) => {
+                      <td data-label={`${index + 1}º Dose Data`}>{dose}</td>
+                    })}
+                  </tr>
+                })};
+              </tbody>
+            </table>
+          </div>
         </div>
       }
+
+      <div className="flex justify-end m-8">
+        <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12">
+          <img src="/remove_circle_outline.svg" />
+        </button>
+        <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12">
+          <img src="/add_circle_outline.svg" />
+        </button>
+      </div>
     </>
   )
 }
