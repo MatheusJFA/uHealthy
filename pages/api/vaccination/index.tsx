@@ -13,15 +13,15 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       userId: Yup.number().required(),
     });
 
-    if (!(await schema.isValid(request.body))) {
+    if (!(await schema.isValid(request.query))) {
       return response.status(400).send(Messages.MSG_E003("userId"));
     }
 
-    const { userId } = request.body;
+    const { userId } = request.query;
 
     const vaccinations = await prisma.vaccination.findMany({
       where: {
-        userId,
+        userId: Number(userId),
       },
     });
 
@@ -200,6 +200,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    return response.status(200).send(Messages.MSG_S002);
+    return response.status(200).send(Messages.MSG_S003);
   }
 }

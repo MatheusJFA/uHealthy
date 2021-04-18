@@ -20,7 +20,7 @@ const Messages = {
   MSG_S000: "Usuário cadastrado com sucesso",
   MSG_S001: "Login realizado com sucesso",
   MSG_S002: "Usuário deslogado com sucesso",
-  MSG_S003: "Vacina deletada com sucesso"
+  MSG_S003: "Vacinação deletada com sucesso"
 }
 
 export default Messages;
