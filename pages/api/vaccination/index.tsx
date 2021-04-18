@@ -14,7 +14,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     });
 
     if (!(await schema.isValid(request.query))) {
-      return response.status(400).send(Messages.MSG_E003("userId"));
+      return response.status(400).send({ error : Messages.MSG_E003("userId")});
     }
 
     const { userId } = request.query;

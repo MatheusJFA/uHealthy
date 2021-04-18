@@ -29,5 +29,6 @@ model Vaccination {
   vaccineMandatory    Boolean       @default(true)
   vaccineDoses        DateTime[]
   vaccinationDate     DateTime      @default(now())
+  vaccinationLocal    String?
   user                User          @relation(fields: [userId], references: [id])
 }
