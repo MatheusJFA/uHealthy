@@ -29,16 +29,6 @@
         margin: 1.2rem;
       }
       
-      .btnPrimary {
-        border: none;
-        padding: 10px;
-        background-color: var(--primary);
-        color: var(--secondary);
-        border-radius: 5px;
-      }
-      
-      
-      
       @media (max-width:680px) {
       
         .imgLogo {

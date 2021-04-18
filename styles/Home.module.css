@@ -5,6 +5,7 @@
   align-items: center;
 }
 
+
 .about {
   @apply flex flex-col justify-items-center mt-5;
 }
@@ -47,13 +48,6 @@
   padding-bottom: 2rem;
 }
 
-.btnPrimary {
-  border: none;
-  padding: 10px;
-  background-color: var(--primary);
-  color: var(--secondary);
-  border-radius: 5px;
-}
 
 @media (max-width:1368px) {
   .login {

@@ -104,7 +104,7 @@ export default function Register() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
+      <div className="flex flex-grow flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
 
         <Image
           className={styles.imgLogin}
@@ -185,7 +185,7 @@ export default function Register() {
             </div>
 
             <div className={styles.footerLogin}>
-              <button className={styles.btnPrimary} onClick={(event) => Register(event)}>Cadastrar</button>
+              <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" onClick={(event) => Register(event)}>Cadastrar</button>
             </div>
           </form>
         </div>
