@@ -81,7 +81,7 @@ export default function Table() {
 
       {loading && vaccines &&
         <>
-          <p>Este usuário não possui nenhuma vacina cadastrada!</p>
+          <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
         </>
       }
 
