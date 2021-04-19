@@ -21,14 +21,14 @@ export default function Table() {
       var jwtData = localStorage.getItem("JWT");
       const data = await jwt.decode(jwtData);
 
-      setName(data.name);
-      setCPF(data.cpf);
-      setUserID(data.id);
-
-      if (jwtData === undefined) {
+      if (!jwtData) {
         toast.error(Messages.MSG_E006);
         Router.push('/');
       }
+
+      setName(data.name);
+      setCPF(data.cpf);
+      setUserID(data.id);
       setLoading(true);
     }
     Verification();
