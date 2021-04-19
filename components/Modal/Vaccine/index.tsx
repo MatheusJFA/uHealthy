@@ -42,7 +42,6 @@ export default function Modal(property: IModal) {
         },
         body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
       });
-
     }
   }
 
@@ -79,46 +78,46 @@ export default function Modal(property: IModal) {
               placeholder="Digite o fabricante da vacina"
               type="text" />
 
-            <div className="flex flex-row items-center justify-items-center">
+            <div className="flex flex-row gap-10 items-center justify-items-center">
               <Input
                 label="1ª Dose"
-                id="vaccineDoses"
+                id="vaccineFirstDose"
                 value={vaccineDoses}
-                onChange={e => setVaccineDoses(e.target.value)}
+                onChange={e => setVaccineDoses[0](e.target.value)}
                 placeholder=""
                 type="date" />
 
               <Input
                 label="2ª Dose"
-                id="vaccineDoses"
+                id="vaccineSecondDose"
                 value={vaccineDoses}
-                onChange={e => setVaccineDoses(e.target.value)}
+                onChange={e => setVaccineDoses[1](e.target.value)}
                 placeholder=""
                 type="date" />
 
               <Input
                 label="3ª Dose"
-                id="vaccineDoses"
+                id="vaccineThirdDose"
                 value={vaccineDoses}
-                onChange={e => setVaccineDoses(e.target.value)}
+                onChange={e => setVaccineDoses[2](e.target.value)}
                 placeholder=""
                 type="date" />
             </div>
 
-            <div className="flex flex-row items-center justify-items-center">
+            <div className="flex flex-row gap-10 items-center justify-items-center">
               <Input
                 label="1ª Dose de Reforço"
-                id="vaccineDoses"
+                id="vaccineFirstReinforcementDoses"
                 value={vaccineDoses}
-                onChange={e => setVaccineDoses(e.target.value)}
+                onChange={e => setVaccineDoses[3](e.target.value)}
                 placeholder=""
                 type="date" />
 
               <Input
                 label="2ª Dose de Reforço"
-                id="vaccineDoses"
+                id="vaccineSecondReinforcementDoses"
                 value={vaccineDoses}
-                onChange={e => setVaccineDoses(e.target.value)}
+                onChange={e => setVaccineDoses[4](e.target.value)}
                 placeholder=""
                 type="date" />
             </div>
