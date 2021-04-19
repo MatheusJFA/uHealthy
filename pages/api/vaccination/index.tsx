@@ -41,8 +41,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineType: Yup.string().required(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean().required(),
-      vaccineDoses: Yup.string().required(),
-      vaccinationDate: Yup.date().required(),
+      vaccineDoses: Yup.array().of(Yup.date()),
       vaccinationLocal: Yup.string(),
     });
 
@@ -57,7 +56,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineManufacturer,
       vaccineMandatory,
       vaccineDoses,
-      vaccinationDate,
       vaccinationLocal
     } = request.body;
 
@@ -84,7 +82,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         vaccineManufacturer,
         vaccineMandatory,
         vaccineDoses,
-        vaccinationDate,
         vaccinationLocal
       }
     });
@@ -101,8 +98,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean(),
-      vaccineDoses: Yup.string().required(),
-      vaccinationDate: Yup.date(),
+      vaccineDoses: Yup.array().of(Yup.date()),
       vaccinationLocal: Yup.string(),
     });
 
@@ -118,7 +114,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineManufacturer,
       vaccineMandatory,
       vaccineDoses,
-      vaccinationDate,
       vaccinationLocal
     } = request.body;
 
@@ -158,7 +153,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         vaccineManufacturer,
         vaccineMandatory,
         vaccineDoses,
-        vaccinationDate,
         vaccinationLocal
       }
     });

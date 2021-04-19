@@ -1,20 +1,18 @@
 import Router from 'next/router';
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image'
 import { toast } from 'react-toastify';
-import Messages from '../utils/messages';
-
-import { env } from "process";
 import jwt from 'jsonwebtoken';
 
+import Messages from '../utils/messages';
+import Modal from '../components/Modal';
 
 export default function Table() {
-  const [id, setID] = useState("");
+  const [userID, setUserID] = useState("");
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
 
-
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +22,7 @@ export default function Table() {
 
       setName(data.name);
       setCPF(data.cpf);
-      setID(data.id);
+      setUserID(data.id);
 
       if (jwtData === undefined) {
         toast.error(Messages.MSG_E006);
@@ -38,7 +36,7 @@ export default function Table() {
 
   useEffect(() => {
     async function GetVaccines() {
-      const response = await fetch(`/api/vaccination?userId=${id}`);
+      const response = await fetch(`/api/vaccination?userId=${userID}`);
       const data = await response.json();
 
       if (data.error)
@@ -49,6 +47,12 @@ export default function Table() {
     if (loading)
       GetVaccines();
   }, [loading])
+
+  function openModal(){
+    console.log("OpenModal - Antes: " + showModal);
+    setShowModal(!showModal);
+    console.log("OpenModal - Depois: " + showModal);
+  }
 
   function LogOut() {
     toast.success(Messages.MSG_S002);
@@ -76,7 +80,7 @@ export default function Table() {
         </ul>
       </nav>
 
-      {loading && vaccines.length === 0 &&
+      {loading && vaccines &&
         <>
           <p>Este usuário não possui nenhuma vacina cadastrada!</p>
         </>
@@ -89,9 +93,8 @@ export default function Table() {
               <thead>
                 <tr>
                   <th scope="col">Vacinas</th>
-                  <th scope="col">Proteção Contra</th>
+                  <th scope="col">Tipo da Vacina</th>
                   <th scope="col">Fabricante</th>
-                  <th scope="col">Data Vacinação</th>
                   <th scope="col">Local Vacinação</th>
                   <th scope="col">1º Dose Data</th>
                   <th scope="col">2º Dose Data</th>
@@ -107,17 +110,10 @@ export default function Table() {
                     <td scope="row" data-label="Vacinas">{vaccine.vaccineName}</td>
                     <td data-label="Proteção Contra">{vaccine.vaccineType}</td>
                     <td data-label="Fabricante">{vaccine.vaccineManufacturer}</td>
-                    <td data-label="DataVacinacao">{vaccine.vaccinationDate}</td>
                     <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
-
-                    { vaccine.vaccineDoses.map((dose, index) => {
-                      <td data-label={"1º Dose Data"}>{dose}</td>
-                      <td data-label={"2º Dose Data"}>{dose}</td>
-                      <td data-label={"3º Dose Data"}>{dose}</td>
-                      <td data-label={"1º Dose Reforço"}>{dose}</td>
-                      <td data-label={"2º Dose Reforço"}>{dose}</td>
+                    {vaccine.vaccineDoses.map((dose, index) => {
+                      <td data-label={`${index}º Dose Data`}>{dose}</td>
                     })}
-                    
                   </tr>
                 })};
               </tbody>
@@ -125,12 +121,15 @@ export default function Table() {
           </div>
         </div>
       }
-
       <div className="flex justify-end m-8">
-        <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12">
+        <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12" onClick={() => openModal()}>
           <img src="/add_circle_outline.svg" />
         </button>
       </div>
+
+      {showModal &&
+        <Modal userID={userID} openModal={showModal} />
+      }
     </>
   )
 }
