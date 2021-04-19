@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Input from "../Input";
+import React, { useRef, useEffect, useCallback, useState } from 'react';
+import Input from '../../Input';
 
 interface IModal {
   userID: string;
   vaccineID?: string;
-  openModal: boolean;
+  showModal: any;
 }
 
 export default function Modal(property: IModal) {
   const userID = property.userID;
   const vaccineID = property.vaccineID;
-  const openModal = property.openModal;
-
-  let [showModal, setShowModal] = useState(openModal);
 
   const [vaccineName, setVaccineName] = useState();
   const [vaccineType, setVaccineType] = useState();
@@ -27,24 +24,8 @@ export default function Modal(property: IModal) {
     }
   }, []);
 
-  function closeModal() {
-    console.log("closeModal - Antes:" + showModal);
-    // setShowModal(!property.openModal);
-    setShowModal(false);
-    console.log("closeModal - Depois:" + showModal);
-  }
-
   async function Save() {
     if (vaccineID) {
-      const response = await fetch("/api/vaccination", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
-      });
-    }
-    else {
       const response = await fetch("/api/vaccination", {
         method: "PUT",
         headers: {
@@ -53,21 +34,27 @@ export default function Modal(property: IModal) {
         body: JSON.stringify({ vaccineID, userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
       });
     }
+    else {
+      const response = await fetch("/api/vaccination", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+      });
+
+    }
+  }
+
+  function close() {
+    property.showModal(false);
   }
 
   return (
     <>
-      { showModal &&
-        <div className="flex justify-center h-screen items-center antialiased">
-          <div className="flex flex-col w-11/12 sm:w-5/6 lg:w-1/2 max-w-2xl mx-auto rounded-lg border border-gray-300 shadow-xl">
-            <div className="flex flex-row justify-between p-6 bg-white rounded-tl-lg rounded-tr-lg">
-              <p className="font-semibold text-gray-800">Cadastro de Vacina</p>
-              <button onClick={() => closeModal()}>X</button>
-            </div>
-
-            <hr />
-
-            <div className="flex flex-col bg-white border-b items-center mt-5 mb-3 space-x-4">
+      {property.showModal &&
+        <div className="background">
+          <div className="conteudoModal">
               <Input
                 label="Nome da Vacina"
                 id="vaccineName"
@@ -119,12 +106,11 @@ export default function Modal(property: IModal) {
                 type="text" />
 
               <div className="flex flex-row items-center justify-between p-5 bg-white border-t border-gray-200 rounded-bl-lg rounded-br-lg">
-                <button className="font-semibold text-gray-600" onClick={() => closeModal()}>Cancel</button>
-                <button className="px-4 py-2 text-white font-semibold bg-blue-500 rounded" onClick={() => Save()}>Salvar</button>
+                <button className="font-semibold text-gray-600" onClick={() => close()}>Cancel</button>
+                <button className="px-4 py-2 text-white font-semibold bg-red-500 rounded" onClick={() => Save()}>Salvar</button>
               </div>
             </div>
           </div>
-        </div>
       }
     </>
   );

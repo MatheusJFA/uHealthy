@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
+import ModalVaccine from '../components/Modal/Vaccine';
 
 export default function Table() {
   const [userID, setUserID] = useState("");
@@ -48,10 +49,8 @@ export default function Table() {
       GetVaccines();
   }, [loading])
 
-  function openModal(){
-    console.log("OpenModal - Antes: " + showModal);
+  function openModal() {
     setShowModal(!showModal);
-    console.log("OpenModal - Depois: " + showModal);
   }
 
   function LogOut() {
@@ -126,10 +125,15 @@ export default function Table() {
           <img src="/add_circle_outline.svg" />
         </button>
       </div>
+      
+      <Modal
+        isOpen={showModal}
+        title="Cadastrar nova vacina"
+        onCancel={() => openModal()}
+        actions=""
+        form={<ModalVaccine showModal={setShowModal} userID={userID} />}
+      />
 
-      {showModal &&
-        <Modal userID={userID} openModal={showModal} />
-      }
     </>
   )
 }
