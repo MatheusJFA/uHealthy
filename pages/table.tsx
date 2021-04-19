@@ -25,11 +25,12 @@ export default function Table() {
         toast.error(Messages.MSG_E006);
         Router.push('/');
       }
-
-      setName(data.name);
-      setCPF(data.cpf);
-      setUserID(data.id);
-      setLoading(true);
+      else {
+        setName(data.name);
+        setCPF(data.cpf);
+        setUserID(data.id);
+        setLoading(true);
+      }
     }
     Verification();
   }, []);
@@ -125,7 +126,7 @@ export default function Table() {
           <img src="/add_circle_outline.svg" />
         </button>
       </div>
-      
+
       <Modal
         isOpen={showModal}
         title="Cadastrar nova vacina"
