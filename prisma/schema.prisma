@@ -8,27 +8,26 @@ datasource db {
 }
 
 model User {
-  id          Int                   @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   email       String
   phone       String
-  cpf         String                @unique
+  cpf         String        @unique
   password    String
   birthDate   DateTime
-  createdAt   DateTime              @default(now())
-  active      Boolean               @default(true)
+  createdAt   DateTime      @default(now())
+  active      Boolean       @default(true)
   Vaccination Vaccination[]
 }
 
 model Vaccination {
-  id                  Int           @id @default(autoincrement())
+  id                  Int      @id @default(autoincrement())
   userId              Int
   vaccineName         String
-  vaccineType         String 
+  vaccineType         String
   vaccineManufacturer String?
-  vaccineMandatory    Boolean       @default(true)
-  vaccineDoses        DateTime[]
-  vaccinationDate     DateTime      @default(now())
+  vaccineMandatory    Boolean  @default(true)
+  vaccineDoses        DateTime[] 
   vaccinationLocal    String?
-  user                User          @relation(fields: [userId], references: [id])
+  user                User     @relation(fields: [userId], references: [id])
 }

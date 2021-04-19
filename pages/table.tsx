@@ -50,15 +50,6 @@ export default function Table() {
       GetVaccines();
   }, [loading])
 
-  async function Register() {
-
-  }
-
-
-  async function Delete() {
-
-  }
-
   function LogOut() {
     toast.success(Messages.MSG_S002);
     localStorage.removeItem("JWT");
@@ -119,9 +110,14 @@ export default function Table() {
                     <td data-label="DataVacinacao">{vaccine.vaccinationDate}</td>
                     <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
 
-                    {vaccine.vaccineDoses.map((dose, index) => {
-                      <td data-label={`${index + 1}º Dose Data`}>{dose}</td>
+                    { vaccine.vaccineDoses.map((dose, index) => {
+                      <td data-label={"1º Dose Data"}>{dose}</td>
+                      <td data-label={"2º Dose Data"}>{dose}</td>
+                      <td data-label={"3º Dose Data"}>{dose}</td>
+                      <td data-label={"1º Dose Reforço"}>{dose}</td>
+                      <td data-label={"2º Dose Reforço"}>{dose}</td>
                     })}
+                    
                   </tr>
                 })};
               </tbody>
@@ -131,9 +127,6 @@ export default function Table() {
       }
 
       <div className="flex justify-end m-8">
-        <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12">
-          <img src="/remove_circle_outline.svg" />
-        </button>
         <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12">
           <img src="/add_circle_outline.svg" />
         </button>

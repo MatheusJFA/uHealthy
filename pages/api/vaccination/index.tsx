@@ -41,7 +41,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineType: Yup.string().required(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean().required(),
-      vaccineDoses: Yup.array().of(Yup.date()),
+      vaccineDoses: Yup.string().required(),
       vaccinationDate: Yup.date().required(),
       vaccinationLocal: Yup.string(),
     });
@@ -101,7 +101,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean(),
-      vaccineDoses: Yup.array().of(Yup.date()),
+      vaccineDoses: Yup.string().required(),
       vaccinationDate: Yup.date(),
       vaccinationLocal: Yup.string(),
     });
@@ -135,7 +135,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     vaccinationExists = await prisma.vaccination.findFirst({
       where: {
         userId,
-        OR: [
+        AND: [
           { vaccineName },
           { vaccineType },
           { vaccineManufacturer }
