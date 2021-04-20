@@ -19,6 +19,15 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const { userId } = request.query;
 
+    const userExists = await prisma.user.findFirst(
+      {
+        where: {
+          id: Number(userId),
+        },
+      });
+
+    if (!userExists) return response.status(400).json({ error: Messages.MSG_E007 });
+
     const vaccinations = await prisma.vaccination.findMany({
       where: {
         userId: Number(userId),
@@ -58,6 +67,15 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineDoses,
       vaccinationLocal
     } = request.body;
+
+    const userExists = await prisma.user.findFirst(
+      {
+        where: {
+          id: userId
+        },
+      });
+
+    if (!userExists) return response.status(400).json({ error: Messages.MSG_E007 });
 
     const vaccinationExists = await prisma.vaccination.findFirst({
       where: {
