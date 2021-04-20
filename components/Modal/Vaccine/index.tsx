@@ -32,7 +32,7 @@ export default function Modal(property: IModal) {
   const [vaccineFirstReinforcementDoses, setVaccineFirstReinforcementDoses] = useState("");
   const [vaccineSecondReinforcementDoses, setVaccineSecondReinforcementDoses] = useState("");
 
-  async function Validate() {
+  async function validate() {
     const schema = Yup.object().shape({
       userId: Yup.number().required(Messages.MSG_E003("userId")),
       vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
@@ -61,9 +61,12 @@ export default function Modal(property: IModal) {
     if (!errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
-    if (!(await schema.isValid({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }))){
+
+    if (!(await schema.isValid({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }))) {
       return false;
     }
+
+    return true;
   }
 
   useEffect(() => {
@@ -72,14 +75,18 @@ export default function Modal(property: IModal) {
     }
   }, []);
 
+  function addDoses(doses){
+    setVaccineDoses(doses);
+  }
+
+
   async function Save(event) {
     event.preventDefault();
+    var validation = await validate();
 
-
-    if (await Validate()) {
+    if (validation) {
       const doses = [vaccineFirstDoses, vaccineSecondDoses, vaccineThirdDoses, vaccineFirstReinforcementDoses, vaccineSecondReinforcementDoses];
-      setVaccineDoses(doses);
-      
+      addDoses(doses);
       if (vaccineId) {
         try {
           const response = await fetch("/api/vaccination", {
@@ -87,7 +94,7 @@ export default function Modal(property: IModal) {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ vaccineID: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
 
@@ -97,7 +104,7 @@ export default function Modal(property: IModal) {
             toast.error(result.error);
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
-            close();
+            property.showModal(false);
             return result;
           }
         } catch (error) {
@@ -120,7 +127,7 @@ export default function Modal(property: IModal) {
             toast.error(result.error);
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
-            close();
+            property.showModal(false);
             return result;
           }
         }
@@ -128,14 +135,14 @@ export default function Modal(property: IModal) {
           toast.error(error);
         }
       }
-
-      setVaccineDoses(doses);
+      addDoses(doses);
     } else {
       return toast.warning(Messages.MSG_A002);
     }
   }
 
-  function close() {
+  function close(event) {
+    event.preventDefault();
     property.showModal(false);
   }
 
@@ -226,7 +233,7 @@ export default function Modal(property: IModal) {
                 type="text" />
 
               <div className="flex flex-row items-center justify-between p-5 bg-white border-t border-gray-200 rounded-bl-lg rounded-br-lg">
-                <button className="font-semibold text-gray-600" onClick={() => close()}>Cancel</button>
+                <button className="font-semibold text-gray-600" onClick={(event) => close(event)}>Cancel</button>
                 <button className="px-4 py-2 text-white font-semibold bg-red-500 rounded" onClick={(event) => Save(event)}>Salvar</button>
               </div>
             </div>

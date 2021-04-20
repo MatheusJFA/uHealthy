@@ -28,7 +28,9 @@ export default function Home() {
   async function login(event) {
     event.preventDefault();
     try {
-      if (await validate()) {
+      var validation = await validate();
+
+      if (validation) {
         const response = await fetch("/api/user/login", {
           method: "POST",
           headers: {
@@ -39,7 +41,7 @@ export default function Home() {
 
         const result = await response.json();
 
-        if (result.error) 
+        if (result.error)
           toast.error(result.error);
         else {
           toast.success(Messages.MSG_S001);

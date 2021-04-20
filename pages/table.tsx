@@ -7,17 +7,21 @@ import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
 
+import { v4 as uuidv4 } from 'uuid';
+
 export default function Table() {
   const [userID, setUserID] = useState("");
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
+  
+  const [vaccineID, setVaccineID] = useState();
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function Verification() {
+    async function verification() {
       var jwtData = localStorage.getItem("JWT");
       const data = await jwt.decode(jwtData);
 
@@ -32,32 +36,58 @@ export default function Table() {
         setLoading(true);
       }
     }
-    Verification();
+    verification();
   }, []);
 
 
   useEffect(() => {
-    async function GetVaccines() {
+    async function getVaccines() {
       const response = await fetch(`/api/vaccination?userId=${userID}`);
       const data = await response.json();
 
       if (data.error)
         toast.error(data.error);
       else
-        setVaccines(data);
+        setVaccines(data.vaccinations);
     }
     if (loading)
-      GetVaccines();
-  }, [loading])
+      getVaccines();
+      setVaccineID(undefined);
+  }, [loading, showModal, vaccines])
 
   function openModal() {
     setShowModal(!showModal);
   }
 
-  function LogOut() {
+  function logOut() {
     toast.success(Messages.MSG_S002);
     localStorage.removeItem("JWT");
     Router.push('/');
+  }
+
+  const renderDoses = (dose) => {
+    return (
+      <>
+        <td key={uuidv4()} data-label="vaccineDoses">{dose}</td>
+      </>
+    );
+  }
+
+  function onRowClick(id) {
+    setVaccineID(id);
+    console.log("clicou na linha: " +id)
+  }
+
+  const renderVaccines = (vaccine) => {
+    return (
+      <tr key={vaccine.id} onClick={() => onRowClick(vaccine.id)}>
+        <td scope="row" data-label="Vacinas">{vaccine.vaccineName}</td>
+        <td data-label="Proteção Contra">{vaccine.vaccineType}</td>
+        <td data-label="Fabricante">{vaccine.vaccineManufacturer}</td>
+        <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
+        {vaccine.vaccineDoses.map((renderDoses))}
+      </tr>
+    );
   }
 
   return (
@@ -70,7 +100,7 @@ export default function Table() {
             <div className="user-id">{cpf}</div>
           </div>
         </div>
-        <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => LogOut()}> Sair </button>
+        <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => logOut()}> Sair </button>
       </div>
 
       <nav className="navbar">
@@ -98,25 +128,14 @@ export default function Table() {
                 </tr>
               </thead>
               <tbody>
-
-                {vaccines.map((vaccine) => {
-                  <tr>
-                    <td scope="row" data-label="Vacinas">{vaccine.vaccineName}</td>
-                    <td data-label="Proteção Contra">{vaccine.vaccineType}</td>
-                    <td data-label="Fabricante">{vaccine.vaccineManufacturer}</td>
-                    <td data-label="LocalVacinacao">{vaccine.vaccinationLocal}</td>
-                    {vaccine.vaccineDoses.map((dose, index) => {
-                      <td data-label={`${index}º Dose Data`}>{dose}</td>
-                    })}
-                  </tr>
-                })};
+                {vaccines.map((renderVaccines))}
               </tbody>
             </table>
           </div>
         </div>) : (
-          <div className="flex flex-grow justify-center items-center">
-            <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
-          </div>)
+        <div className="flex flex-grow justify-center items-center">
+          <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
+        </div>)
       }
       <div className="flex justify-end m-8">
         <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12" onClick={() => openModal()}>
@@ -129,9 +148,8 @@ export default function Table() {
         title="Cadastrar nova vacina"
         onCancel={() => openModal()}
         actions=""
-        form={<ModalVaccine showModal={setShowModal} userID={userID} />}
+        form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineID={vaccineID} />}
       />
-
     </>
   )
 }

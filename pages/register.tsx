@@ -62,7 +62,9 @@ export default function Register() {
       if (!ValidateCPF())
         return toast.error(Messages.MSG_CPF_ERROR);
 
-      if (await validate()) {
+      var validation = await validate();
+
+      if (validation) {
 
         const response = await fetch("/api/user/register", {
           method: "POST",
