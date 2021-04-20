@@ -60,7 +60,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   
       await prisma.$disconnect()
   
-      return response.status(200).send({ usuario: user });
+      return response.status(200).send({ user });
     }
   } catch (error) {
     response.status(500).json({ error: error });

@@ -80,14 +80,8 @@ export default function Table() {
         </ul>
       </nav>
 
-      {loading && vaccines &&
-        <>
-          <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
-        </>
-      }
-
-      {loading && vaccines.length > 0 &&
-        <div className="flex-grow">
+      {loading && vaccines.length > 0 ? (
+        <div className="flex flex-grow">
           <div className="table-vacination">
             <table>
               <thead>
@@ -119,7 +113,10 @@ export default function Table() {
               </tbody>
             </table>
           </div>
-        </div>
+        </div>) : (
+          <div className="flex flex-grow justify-center items-center">
+            <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
+          </div>)
       }
       <div className="flex justify-end m-8">
         <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12" onClick={() => openModal()}>

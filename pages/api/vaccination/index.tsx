@@ -40,8 +40,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineName: Yup.string().required(),
       vaccineType: Yup.string().required(),
       vaccineManufacturer: Yup.string(),
+      vaccineDoses: Yup.array().of(Yup.string()),
       vaccineMandatory: Yup.boolean().required(),
-      vaccineDoses: Yup.array().of(Yup.date()),
       vaccinationLocal: Yup.string(),
     });
 
@@ -98,7 +98,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean(),
-      vaccineDoses: Yup.array().of(Yup.date()),
+      vaccineDoses: Yup.array().of(Yup.string()),
       vaccinationLocal: Yup.string(),
     });
 
@@ -194,6 +194,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    return response.status(200).send(Messages.MSG_S003);
+    return response.status(200).send(Messages.MSG_SUCCESS_MESSAGE("Vacinação", "deletada"));
   }
 }

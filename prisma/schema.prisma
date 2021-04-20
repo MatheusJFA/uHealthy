@@ -27,7 +27,7 @@ model Vaccination {
   vaccineType         String
   vaccineManufacturer String?
   vaccineMandatory    Boolean  @default(true)
-  vaccineDoses        DateTime[] 
+  vaccineDoses        String[]
   vaccinationLocal    String?
   user                User     @relation(fields: [userId], references: [id])
 }
