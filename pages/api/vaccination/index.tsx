@@ -14,7 +14,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     });
 
     if (!(await schema.isValid(request.query))) {
-      return response.status(400).send({ error : Messages.MSG_E003("userId")});
+      return response.status(400).send({ error: Messages.MSG_E003("userId") });
     }
 
     const { userId } = request.query;
@@ -36,17 +36,17 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   if (request.method === "POST") {
     const schema = Yup.object().shape({
-      userId: Yup.number().required(),
-      vaccineName: Yup.string().required(),
-      vaccineType: Yup.string().required(),
+      userId: Yup.number().required(Messages.MSG_E003("userId")),
+      vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
+      vaccineType: Yup.string().required(Messages.MSG_E003("vaccineType")),
       vaccineManufacturer: Yup.string(),
       vaccineDoses: Yup.array().of(Yup.string()),
-      vaccineMandatory: Yup.boolean().required(),
+      vaccineMandatory: Yup.boolean().required(Messages.MSG_E003("vaccineMandatory")),
       vaccinationLocal: Yup.string(),
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E003("userId"));
+      return response.status(400).json({ error: Messages.MSG_A002 });
     }
 
     const {
@@ -93,7 +93,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   if (request.method === "PUT") {
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
+      id: Yup.number().required(Messages.MSG_E003("id")),
       vaccineName: Yup.string(),
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
@@ -103,7 +103,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E003("id"));
+      return response.status(400).json({ error: Messages.MSG_A002 });
     }
 
     const {
