@@ -1,9 +1,12 @@
 import { Router } from 'next/router';
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
+
 import Messages from '../../../utils/messages';
 import Input from '../../Input';
 import ToggleButton from '../../ToggleButton';
+
 
 interface IModal {
   userID: string;
@@ -15,19 +18,52 @@ export default function Modal(property: IModal) {
   const userID = property.userID;
   const vaccineID = property.vaccineID;
 
-  const [vaccineName, setVaccineName] = useState();
-  const [vaccineType, setVaccineType] = useState();
-  const [vaccineManufacturer, setVaccineManufacturer] = useState();
-  const [vaccineMandatory, setVaccineMandatory] = useState();
+  const [vaccineName, setVaccineName] = useState("");
+  const [vaccineType, setVaccineType] = useState("");
+  const [vaccineManufacturer, setVaccineManufacturer] = useState("");
+  const [vaccineMandatory, setVaccineMandatory] = useState(false);
   const [vaccineDoses, setVaccineDoses] = useState([]);
-  const [vaccinationLocal, setVaccinationLocal] = useState();
+  const [vaccinationLocal, setVaccinationLocal] = useState("");
 
 
-  const [vaccineFirstDoses, setVaccineFirstDoses] = useState();
-  const [vaccineSecondDoses, setVaccineSecondDoses] = useState();
-  const [vaccineThirdDoses, setVaccineThirdDoses] = useState();
-  const [vaccineFirstReinforcementDoses, setVaccineFirstReinforcementDoses] = useState();
-  const [vaccineSecondReinforcementDoses, setVaccineSecondReinforcementDoses] = useState();
+  const [vaccineFirstDoses, setVaccineFirstDoses] = useState("");
+  const [vaccineSecondDoses, setVaccineSecondDoses] = useState("");
+  const [vaccineThirdDoses, setVaccineThirdDoses] = useState("");
+  const [vaccineFirstReinforcementDoses, setVaccineFirstReinforcementDoses] = useState("");
+  const [vaccineSecondReinforcementDoses, setVaccineSecondReinforcementDoses] = useState("");
+
+  async function Validate() {
+    const schema = Yup.object().shape({
+      userID: Yup.number().required(Messages.MSG_E003("userId")),
+      vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
+      vaccineType: Yup.string().required(Messages.MSG_E003("vaccineType")),
+      vaccineManufacturer: Yup.string(),
+      vaccineDoses: Yup.array().of(Yup.string()),
+      vaccineMandatory: Yup.boolean().required(Messages.MSG_E003("vaccineMandatory")),
+      vaccinationLocal: Yup.string(),
+    });
+
+    var errorsList = [];
+
+    try {
+      var errors = await schema
+        .validate({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }, { abortEarly: false })
+        .catch(errors => {
+          errors.inner.map(error => {
+            errorsList.push("• " + error.message);
+            return { field: error.path, message: error.message };
+          });
+        });
+    } catch (error) {
+      toast.error(error);
+    }
+
+    if (errorsList)
+      toast.error(Messages.MSG_ERROR(errorsList));
+
+    if (!(await schema.isValid({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal })))
+      return false;
+  }
 
   useEffect(() => {
     if (vaccineID) {
@@ -38,58 +74,62 @@ export default function Modal(property: IModal) {
   async function Save(event) {
     event.preventDefault();
 
-    const doses = [vaccineFirstDoses, vaccineSecondDoses, vaccineThirdDoses, vaccineFirstReinforcementDoses, vaccineSecondReinforcementDoses];
-   
-    setVaccineDoses(doses);
-    console.log(vaccineDoses);
+    if (await Validate()) {
+      const doses = [vaccineFirstDoses, vaccineSecondDoses, vaccineThirdDoses, vaccineFirstReinforcementDoses, vaccineSecondReinforcementDoses];
+      setVaccineDoses(doses);
 
-    if (vaccineID) {
-      try {
-        const response = await fetch("/api/vaccination", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ vaccineID, userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
-        });
+      if (vaccineID) {
+        try {
+          const response = await fetch("/api/vaccination", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ vaccineID, userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+          });
 
 
-        const result = await response.json();
+          const result = await response.json();
 
-        if (result.error)
-          toast.error(result.error);
-        else {
-          toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
-          close();
-          return result;
-        }
-      } catch (error) {
-        toast.error(error);
-      }
-    }
-    else {
-      try {
-        const response = await fetch("/api/vaccination", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
-        });
-
-        const result = await response.json();
-
-        if (result.error)
-          toast.error(result.error);
-        else {
-          toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
-          close();
-          return result;
+          if (result.error)
+            toast.error(result.error);
+          else {
+            toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
+            close();
+            return result;
+          }
+        } catch (error) {
+          toast.error(error);
         }
       }
-      catch (error) {
-        toast.error(error);
+      else {
+        try {
+          const response = await fetch("/api/vaccination", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+          });
+
+          const result = await response.json();
+
+          if (result.error)
+            toast.error(result.error);
+          else {
+            toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
+            close();
+            return result;
+          }
+        }
+        catch (error) {
+          toast.error(error);
+        }
       }
+
+      setVaccineDoses(doses);
+    } else {
+      return toast.warning(Messages.MSG_A002);
     }
   }
 
@@ -128,7 +168,7 @@ export default function Modal(property: IModal) {
                   placeholder="Digite o fabricante da vacina"
                   type="text" />
 
-                  <ToggleButton value={vaccineMandatory} setValue={setVaccineMandatory}/>
+                <ToggleButton value={vaccineMandatory} setValue={setVaccineMandatory} />
               </div>
 
               <div className="flex flex-row gap-10 items-center justify-items-center">

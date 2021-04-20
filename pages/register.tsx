@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from 'next/image';
 import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
-import Router from "next/router" ;
+import Router from "next/router";
 import * as Yup from 'yup';
 
 import Messages from "../utils/messages";
@@ -48,7 +48,7 @@ export default function Register() {
       toast.error(error);
     }
 
-    if (errorsList == null)
+    if (errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
     if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;
@@ -62,24 +62,27 @@ export default function Register() {
       if (!ValidateCPF())
         return toast.error(Messages.MSG_CPF_ERROR);
 
-      await validate();
+      if (await validate()) {
 
-      const response = await fetch("/api/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
-      });
+        const response = await fetch("/api/user/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ cpf, name, email, password, passwordConfirmation, phone, birthDate })
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (result.error)
-        toast.error(result.error);
-      else {
-        toast.success(Messages.MSG_S000);
-        Router.push('/');
-        return result;
+        if (result.error)
+          toast.error(result.error);
+        else {
+          toast.success(Messages.MSG_S000);
+          Router.push('/');
+          return result;
+        }
+      } else {
+        return toast.warning(Messages.MSG_A002);
       }
     } catch (error) {
       toast.error(error);
