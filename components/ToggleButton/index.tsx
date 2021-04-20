@@ -3,7 +3,6 @@ import React, { useState } from "react";
 export default function ToggleButton({ value = false, setValue }) {
   function toggle() {
     setValue(!value);
-    console.log(value);
   }
 
   return (

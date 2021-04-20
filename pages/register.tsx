@@ -48,7 +48,7 @@ export default function Register() {
       toast.error(error);
     }
 
-    if (errorsList)
+    if (!errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
     if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;

@@ -15,8 +15,8 @@ interface IModal {
 }
 
 export default function Modal(property: IModal) {
-  const userID = property.userID;
-  const vaccineID = property.vaccineID;
+  const userId = property.userID;
+  const vaccineId = property.vaccineID;
 
   const [vaccineName, setVaccineName] = useState("");
   const [vaccineType, setVaccineType] = useState("");
@@ -34,7 +34,7 @@ export default function Modal(property: IModal) {
 
   async function Validate() {
     const schema = Yup.object().shape({
-      userID: Yup.number().required(Messages.MSG_E003("userId")),
+      userId: Yup.number().required(Messages.MSG_E003("userId")),
       vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
       vaccineType: Yup.string().required(Messages.MSG_E003("vaccineType")),
       vaccineManufacturer: Yup.string(),
@@ -47,7 +47,7 @@ export default function Modal(property: IModal) {
 
     try {
       var errors = await schema
-        .validate({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }, { abortEarly: false })
+        .validate({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }, { abortEarly: false })
         .catch(errors => {
           errors.inner.map(error => {
             errorsList.push("• " + error.message);
@@ -58,15 +58,16 @@ export default function Modal(property: IModal) {
       toast.error(error);
     }
 
-    if (errorsList)
+    if (!errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
-    if (!(await schema.isValid({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal })))
+    if (!(await schema.isValid({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }))){
       return false;
+    }
   }
 
   useEffect(() => {
-    if (vaccineID) {
+    if (vaccineId) {
 
     }
   }, []);
@@ -74,18 +75,19 @@ export default function Modal(property: IModal) {
   async function Save(event) {
     event.preventDefault();
 
+
     if (await Validate()) {
       const doses = [vaccineFirstDoses, vaccineSecondDoses, vaccineThirdDoses, vaccineFirstReinforcementDoses, vaccineSecondReinforcementDoses];
       setVaccineDoses(doses);
-
-      if (vaccineID) {
+      
+      if (vaccineId) {
         try {
           const response = await fetch("/api/vaccination", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ vaccineID, userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ vaccineID: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
 
@@ -109,7 +111,7 @@ export default function Modal(property: IModal) {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ userID, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
           const result = await response.json();
