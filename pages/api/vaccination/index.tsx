@@ -79,7 +79,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const vaccinationExists = await prisma.vaccination.findFirst({
       where: {
-        userId,
         AND: [
           { userId },
           { vaccineName },
@@ -148,8 +147,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     vaccinationExists = await prisma.vaccination.findFirst({
       where: {
-        userId,
         AND: [
+          { userId },
           { vaccineName },
           { vaccineType },
           { vaccineManufacturer }
