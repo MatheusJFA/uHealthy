@@ -156,7 +156,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       },
     });
 
-    if (vaccinationExists) {
+    if (id !== vaccinationExists.id) {
       return response.status(400).json({ error: Messages.MSG_E009 });
     }
 

@@ -61,7 +61,7 @@ export default function Table() {
   const renderDoses = (dose) => {
     return (
       <>
-        <td key={uuidv4()} data-label="vaccineDoses">{dose}</td>
+        <td key={uuidv4()} data-label="vaccineDoses">{dose ? dose : "-"}</td>
       </>
     );
   }

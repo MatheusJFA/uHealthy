@@ -129,7 +129,7 @@ export default function Modal(property: IModal) {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ id: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
 
@@ -183,6 +183,12 @@ export default function Modal(property: IModal) {
     property.showModal(false);
   }
 
+  function addDoses(event, position) {
+    const copyArray = [...vaccineDoses];
+    copyArray[position] = event.target.value;
+    setVaccineDoses(copyArray);
+  }
+
   return (
     <>
       {property.showModal &&
@@ -222,7 +228,7 @@ export default function Modal(property: IModal) {
                   label="1ª Dose"
                   id="vaccineFirstDose"
                   value={vaccineDoses[0]}
-                  onChange={e => setVaccineDoses(e.target.value)}
+                  onChange={event => addDoses(event, 0)}
                   placeholder=""
                   type="date" />
 
@@ -230,7 +236,7 @@ export default function Modal(property: IModal) {
                   label="2ª Dose"
                   id="vaccineSecondDose"
                   value={vaccineDoses[1]}
-                  onChange={e => setVaccineDoses(e.target.value)}
+                  onChange={event => addDoses(event, 1)}
                   placeholder=""
                   type="date" />
 
@@ -238,7 +244,7 @@ export default function Modal(property: IModal) {
                   label="3ª Dose"
                   id="vaccineThirdDose"
                   value={vaccineDoses[2]}
-                  onChange={e => setVaccineDoses(e.target.value)}
+                  onChange={event => addDoses(event, 2)}
                   placeholder=""
                   type="date" />
               </div>
@@ -248,7 +254,7 @@ export default function Modal(property: IModal) {
                   label="1ª Dose de Reforço"
                   id="vaccineFirstReinforcementDoses"
                   value={vaccineDoses[3]}
-                  onChange={e => setVaccineDoses(e.target.value)}
+                  onChange={event => addDoses(event, 3)}
                   placeholder=""
                   type="date" />
 
@@ -256,7 +262,7 @@ export default function Modal(property: IModal) {
                   label="2ª Dose de Reforço"
                   id="vaccineSecondReinforcementDoses"
                   value={vaccineDoses[4]}
-                  onChange={e => setVaccineDoses(e.target.value)}
+                  onChange={event => addDoses(event, 4)}
                   placeholder=""
                   type="date" />
               </div>
