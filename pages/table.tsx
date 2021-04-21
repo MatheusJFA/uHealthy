@@ -1,8 +1,7 @@
 import Router from 'next/router';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import jwt from 'jsonwebtoken';
-
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
@@ -14,30 +13,26 @@ export default function Table() {
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
-  
-  const [vaccineID, setVaccineID] = useState();
+
+  const [vaccineID, setVaccineID] = useState(undefined);
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function verification() {
-      var jwtData = localStorage.getItem("JWT");
-      const data = await jwt.decode(jwtData);
 
-      if (!jwtData) {
-        toast.error(Messages.MSG_E006);
-        Router.push('/');
-      }
-      else {
-        setName(data.name);
-        setCPF(data.cpf);
-        setUserID(data.id);
-        setLoading(true);
-      }
-    }
+  async function verification() {
+    var jwtData = localStorage.getItem("JWT");
+    const data = await jwt.decode(jwtData);
+    setTimeout(() => {
+      setName(data.name);
+      setCPF(data.cpf);
+      setUserID(data.id);
+    }, 2000);
+  }
+
+  useEffect(() => {
     verification();
-  }, []);
+  }, [loading, name, cpf]);
 
 
   useEffect(() => {
@@ -45,15 +40,13 @@ export default function Table() {
       const response = await fetch(`/api/vaccination?userId=${userID}`);
       const data = await response.json();
 
-      if (data.error)
-        toast.error(data.error);
-      else
-        setVaccines(data.vaccinations);
+      setVaccines(data.vaccinations);
     }
-    if (loading)
+
+    if (userID)
       getVaccines();
-      setVaccineID(undefined);
-  }, [loading, showModal, vaccines])
+    setVaccineID(undefined);
+  }, [loading, showModal, userID]);
 
   function openModal() {
     setShowModal(!showModal);
@@ -74,9 +67,14 @@ export default function Table() {
   }
 
   function onRowClick(id) {
-    setVaccineID(id);
-    console.log("clicou na linha: " +id)
+    setTimeout(() => {
+       setVaccineID(id)
+    }, 2000);
+
+    openModal();
   }
+
+
 
   const renderVaccines = (vaccine) => {
     return (
@@ -110,7 +108,7 @@ export default function Table() {
         </ul>
       </nav>
 
-      {loading && vaccines.length > 0 ? (
+      {!loading && vaccines.length > 0 &&
         <div className="flex flex-grow">
           <div className="table-vacination">
             <table>
@@ -132,11 +130,15 @@ export default function Table() {
               </tbody>
             </table>
           </div>
-        </div>) : (
+        </div>
+      }
+
+      {loading && vaccines.length <= 0 &&
         <div className="flex flex-grow justify-center items-center">
           <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
-        </div>)
+        </div>
       }
+
       <div className="flex justify-end m-8">
         <button type="button" className="hover:cursor-pointer hover:shadow-md rounded-full border-none w-12" onClick={() => openModal()}>
           <img src="/add_circle_outline.svg" />
@@ -148,7 +150,7 @@ export default function Table() {
         title="Cadastrar nova vacina"
         onCancel={() => openModal()}
         actions=""
-        form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineID={vaccineID} />}
+        form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
       />
     </>
   )

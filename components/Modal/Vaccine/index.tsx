@@ -1,5 +1,5 @@
 import { Router } from 'next/router';
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -10,27 +10,23 @@ import ToggleButton from '../../ToggleButton';
 
 interface IModal {
   userID: string;
-  vaccineID?: string;
+  vaccineId?: any;
   showModal: any;
 }
 
 export default function Modal(property: IModal) {
   const userId = property.userID;
-  const vaccineId = property.vaccineID;
+  const vaccineId = property.vaccineId;
+
+  const [loading, setLoading] = useState(false);
 
   const [vaccineName, setVaccineName] = useState("");
   const [vaccineType, setVaccineType] = useState("");
   const [vaccineManufacturer, setVaccineManufacturer] = useState("");
   const [vaccineMandatory, setVaccineMandatory] = useState(false);
-  const [vaccineDoses, setVaccineDoses] = useState([]);
   const [vaccinationLocal, setVaccinationLocal] = useState("");
 
-
-  const [vaccineFirstDoses, setVaccineFirstDoses] = useState("");
-  const [vaccineSecondDoses, setVaccineSecondDoses] = useState("");
-  const [vaccineThirdDoses, setVaccineThirdDoses] = useState("");
-  const [vaccineFirstReinforcementDoses, setVaccineFirstReinforcementDoses] = useState("");
-  const [vaccineSecondReinforcementDoses, setVaccineSecondReinforcementDoses] = useState("");
+  let [vaccineDoses, setVaccineDoses] = useState([]);
 
   async function validate() {
     const schema = Yup.object().shape({
@@ -70,25 +66,64 @@ export default function Modal(property: IModal) {
   }
 
   useEffect(() => {
-    if (vaccineId) {
+    async function getVaccine() {
+      if (vaccineId) {
+        const response = await fetch(`/api/vaccination/vaccine?id=${vaccineId}`);
+        const data = await response.json();
 
+        if (data.error)
+          toast.error(data.error);
+        else {
+          const vaccination = data.vaccination;
+          const doses = vaccination.vaccineDoses;
+
+          setVaccineName(vaccination.vaccineName);
+          setVaccineType(vaccination.vaccineType);
+          setVaccineManufacturer(vaccination.vaccineManufacturer);
+          setVaccineMandatory(vaccination.vaccineMandatory);
+          setVaccinationLocal(vaccination.vaccinationLocal);
+
+          setVaccineDoses(doses);
+        }
+      }
     }
-  }, []);
+    if (vaccineId)
+      getVaccine();
+  }, [vaccineId]);
 
-  function addDoses(doses){
-    setVaccineDoses(doses);
+  async function discard() {
+    try {
+      const response = await fetch("/api/vaccination", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: vaccineId })
+      });
+
+      const result = await response.json();
+
+      if (result.error)
+        toast.error(result.error);
+      else {
+        toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
+        property.showModal(false);
+        return result;
+      }
+    } catch (error) {
+      toast.error(error);
+    }
   }
 
-
-  async function Save(event) {
+  async function save(event) {
     event.preventDefault();
+
     var validation = await validate();
 
     if (validation) {
-      const doses = [vaccineFirstDoses, vaccineSecondDoses, vaccineThirdDoses, vaccineFirstReinforcementDoses, vaccineSecondReinforcementDoses];
-      addDoses(doses);
       if (vaccineId) {
         try {
+          setLoading(false);
           const response = await fetch("/api/vaccination", {
             method: "PUT",
             headers: {
@@ -105,6 +140,7 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
             property.showModal(false);
+            await setLoading(true);
             return result;
           }
         } catch (error) {
@@ -113,6 +149,7 @@ export default function Modal(property: IModal) {
       }
       else {
         try {
+          setLoading(false);
           const response = await fetch("/api/vaccination", {
             method: "POST",
             headers: {
@@ -128,6 +165,7 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
             property.showModal(false);
+            setLoading(true);
             return result;
           }
         }
@@ -135,7 +173,6 @@ export default function Modal(property: IModal) {
           toast.error(error);
         }
       }
-      addDoses(doses);
     } else {
       return toast.warning(Messages.MSG_A002);
     }
@@ -184,24 +221,24 @@ export default function Modal(property: IModal) {
                 <Input
                   label="1ª Dose"
                   id="vaccineFirstDose"
-                  value={vaccineFirstDoses}
-                  onChange={e => setVaccineFirstDoses(e.target.value)}
+                  value={vaccineDoses[0]}
+                  onChange={e => setVaccineDoses(e.target.value)}
                   placeholder=""
                   type="date" />
 
                 <Input
                   label="2ª Dose"
                   id="vaccineSecondDose"
-                  value={vaccineSecondDoses}
-                  onChange={e => setVaccineSecondDoses(e.target.value)}
+                  value={vaccineDoses[1]}
+                  onChange={e => setVaccineDoses(e.target.value)}
                   placeholder=""
                   type="date" />
 
                 <Input
                   label="3ª Dose"
                   id="vaccineThirdDose"
-                  value={vaccineThirdDoses}
-                  onChange={e => setVaccineThirdDoses(e.target.value)}
+                  value={vaccineDoses[2]}
+                  onChange={e => setVaccineDoses(e.target.value)}
                   placeholder=""
                   type="date" />
               </div>
@@ -210,16 +247,16 @@ export default function Modal(property: IModal) {
                 <Input
                   label="1ª Dose de Reforço"
                   id="vaccineFirstReinforcementDoses"
-                  value={vaccineFirstReinforcementDoses}
-                  onChange={e => setVaccineFirstReinforcementDoses(e.target.value)}
+                  value={vaccineDoses[3]}
+                  onChange={e => setVaccineDoses(e.target.value)}
                   placeholder=""
                   type="date" />
 
                 <Input
                   label="2ª Dose de Reforço"
                   id="vaccineSecondReinforcementDoses"
-                  value={vaccineSecondReinforcementDoses}
-                  onChange={e => setVaccineSecondReinforcementDoses(e.targetValue)}
+                  value={vaccineDoses[4]}
+                  onChange={e => setVaccineDoses(e.target.value)}
                   placeholder=""
                   type="date" />
               </div>
@@ -234,7 +271,10 @@ export default function Modal(property: IModal) {
 
               <div className="flex flex-row items-center justify-between p-5 bg-white border-t border-gray-200 rounded-bl-lg rounded-br-lg">
                 <button className="font-semibold text-gray-600" onClick={(event) => close(event)}>Cancel</button>
-                <button className="px-4 py-2 text-white font-semibold bg-red-500 rounded" onClick={(event) => Save(event)}>Salvar</button>
+                <div className="flex flex-row items-center p-5 bg-white border-t gap-10 border-gray-200 rounded-bl-lg rounded-br-lg">
+                  {vaccineId && <button className="px-4 py-2 text-red-500 font-semibold bg-white rounded" onClick={(event) => discard()}>Deletar</button>}
+                  <button className="px-4 py-2 text-white font-semibold bg-red-500 rounded" onClick={(event) => save(event)}>Salvar</button>
+                </div>
               </div>
             </div>
           </div>

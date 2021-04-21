@@ -189,10 +189,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       return response.status(400).send(Messages.MSG_E003("id"));
     }
 
-    const {
-      id,
-
-    } = request.body;
+    const { id } = request.body;
 
     let vaccinationExists = await prisma.vaccination.findFirst({
       where: {
