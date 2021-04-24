@@ -132,7 +132,6 @@ export default function Modal(property: IModal) {
             body: JSON.stringify({ id: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
-
           const result = await response.json();
 
           if (result.error)
@@ -227,7 +226,7 @@ export default function Modal(property: IModal) {
                 <Input
                   label="1ª Dose"
                   id="vaccineFirstDose"
-                  value={vaccineDoses[0]}
+                  value={vaccineDoses[0] !== null ? vaccineDoses[0] : " "}
                   onChange={event => addDoses(event, 0)}
                   placeholder=""
                   type="date" />
@@ -235,7 +234,7 @@ export default function Modal(property: IModal) {
                 <Input
                   label="2ª Dose"
                   id="vaccineSecondDose"
-                  value={vaccineDoses[1]}
+                  value={vaccineDoses[1] !== null ? vaccineDoses[1] : " "}
                   onChange={event => addDoses(event, 1)}
                   placeholder=""
                   type="date" />
@@ -243,7 +242,7 @@ export default function Modal(property: IModal) {
                 <Input
                   label="3ª Dose"
                   id="vaccineThirdDose"
-                  value={vaccineDoses[2]}
+                  value={vaccineDoses[2] !== null ? vaccineDoses[2] : " "}
                   onChange={event => addDoses(event, 2)}
                   placeholder=""
                   type="date" />
@@ -253,7 +252,7 @@ export default function Modal(property: IModal) {
                 <Input
                   label="1ª Dose de Reforço"
                   id="vaccineFirstReinforcementDoses"
-                  value={vaccineDoses[3]}
+                  value={vaccineDoses[3] !== null ? vaccineDoses[3] : " "}
                   onChange={event => addDoses(event, 3)}
                   placeholder=""
                   type="date" />
@@ -261,7 +260,7 @@ export default function Modal(property: IModal) {
                 <Input
                   label="2ª Dose de Reforço"
                   id="vaccineSecondReinforcementDoses"
-                  value={vaccineDoses[4]}
+                  value={vaccineDoses[4] !== null ? vaccineDoses[4] : " "}
                   onChange={event => addDoses(event, 4)}
                   placeholder=""
                   type="date" />

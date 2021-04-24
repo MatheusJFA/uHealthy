@@ -68,7 +68,7 @@ export default function Table() {
 
   function onRowClick(id) {
     setTimeout(() => {
-       setVaccineID(id)
+      setVaccineID(id)
     }, 2000);
 
     openModal();
