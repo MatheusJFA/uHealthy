@@ -28,7 +28,9 @@ export default function Home() {
   async function login(event) {
     event.preventDefault();
     try {
-      if (await validate()) {
+      var validation = await validate();
+
+      if (validation) {
         const response = await fetch("/api/user/login", {
           method: "POST",
           headers: {
@@ -39,7 +41,7 @@ export default function Home() {
 
         const result = await response.json();
 
-        if (result.error) 
+        if (result.error)
           toast.error(result.error);
         else {
           toast.success(Messages.MSG_S001);
@@ -69,7 +71,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.container}>
+      <div className="flex flex-col md:flex-row flex-grow justify-around items-center">
 
         <Image
           src="/landing.svg"
@@ -109,7 +111,7 @@ export default function Home() {
                 </Link>
               </h2>
 
-              <button className={styles.btnPrimary} onClick={(e) => login(e)} >Acessar</button>
+              <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" onClick={(e) => login(e)} >Acessar</button>
             </div>
           </div>
         </form>

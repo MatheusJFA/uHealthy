@@ -7,6 +7,8 @@ const Messages = {
   MSG_E005: "Usuário ou senha inválidos",
   MSG_E006: "Usuário não autorizado",
   MSG_E007: "Usuário não encontrado",
+  MSG_E008: "Nenhuma vacinação encontrada para este usuário",
+  MSG_E009: "Não foi possivel atualizar, ja existe uma vacinação com este nome",
 
 
   MSG_CPF_ERROR: "O CPF digitado não é valido!",
@@ -16,7 +18,11 @@ const Messages = {
   MSG_A001: "O usuário precisa estar logado!",
   MSG_A002: "A validação falhou!",
   MSG_S000: "Usuário cadastrado com sucesso",
+
+  MSG_SUCCESS_MESSAGE: (name: string, action: string) => `${name} ${action} com sucesso`,
+
   MSG_S001: "Login realizado com sucesso",
+  MSG_S002: "Usuário deslogado com sucesso",
 }
 
 export default Messages;
