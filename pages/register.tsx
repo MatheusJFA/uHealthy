@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import Image from 'next/image';
-import Router from 'next/router';
 import Input from '../components/Input'
 import styles from "../styles/Register.module.css";
-
+import Router from "next/router";
 import * as Yup from 'yup';
 
 import Messages from "../utils/messages";
@@ -22,7 +20,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  function ValidateCPF() : boolean{
+  function ValidateCPF(): boolean {
     return CPFValidate(cpf);
   }
 
@@ -50,8 +48,8 @@ export default function Register() {
       toast.error(error);
     }
 
-    if(errorsList == null)
-     toast.error(Messages.MSG_ERROR(errorsList));
+    if (!errorsList)
+      toast.error(Messages.MSG_ERROR(errorsList));
 
     if (!(await schema.isValid({ cpf, email, name, birthDate, password, passwordConfirmation }))) return false;
 
@@ -61,9 +59,13 @@ export default function Register() {
   async function Register(event) {
     event.preventDefault();
     try {
-      if(!ValidateCPF())
+      if (!ValidateCPF())
         return toast.error(Messages.MSG_CPF_ERROR);
-      if (await validate()) {
+
+      var validation = await validate();
+
+      if (validation) {
+
         const response = await fetch("/api/user/register", {
           method: "POST",
           headers: {
@@ -73,13 +75,16 @@ export default function Register() {
         });
 
         const result = await response.json();
-        if (result) 
-          return toast.error(result); 
+
+        if (result.error)
+          toast.error(result.error);
         else {
           toast.success(Messages.MSG_S000);
           Router.push('/');
           return result;
         }
+      } else {
+        return toast.warning(Messages.MSG_A002);
       }
     } catch (error) {
       toast.error(error);
@@ -104,7 +109,7 @@ export default function Register() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
+      <div className="flex flex-grow flex-col md:flex-row  justify-around items-center mt-14 md:mt-0 mb-8 md:mb-0">
 
         <Image
           className={styles.imgLogin}
@@ -185,7 +190,7 @@ export default function Register() {
             </div>
 
             <div className={styles.footerLogin}>
-              <button className={styles.btnPrimary} onClick={(event) => Register(event)}>Cadastrar</button>
+              <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" onClick={(event) => Register(event)}>Cadastrar</button>
             </div>
           </form>
         </div>
