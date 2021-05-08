@@ -11,17 +11,28 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     const schema = Yup.object().shape({
       userId: Yup.number().required(),
+      dependentId: Yup.number(),
     });
 
-    if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E003("userId"));
+    if (!(await schema.isValid(request.query))) {
+      return response.status(400).send({ error: Messages.MSG_E003("userId") });
     }
 
-    const { userId } = request.body;
+    const { userId, dependentId } = request.query;
+
+    const userExists = await prisma.user.findFirst(
+      {
+        where: {
+          id: Number(userId),
+        },
+      });
+
+    if (!userExists) return response.status(400).json({ error: Messages.MSG_E007 });
 
     const vaccinations = await prisma.vaccination.findMany({
       where: {
-        userId,
+        userId: Number(userId),
+        dependentId: dependentId ? Number(dependentId) : null
       },
     });
 
@@ -36,35 +47,45 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   if (request.method === "POST") {
     const schema = Yup.object().shape({
-      userId: Yup.number().required(),
-      vaccineName: Yup.string().required(),
-      vaccineType: Yup.string().required(),
+      userId: Yup.number().required(Messages.MSG_E003("userId")),
+      dependentId: Yup.number(),
+      vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
+      vaccineType: Yup.string().required(Messages.MSG_E003("vaccineType")),
       vaccineManufacturer: Yup.string(),
-      vaccineMandatory: Yup.boolean().required(),
-      vaccineDoses: Yup.array().of(Yup.date()),
-      vaccinationDate: Yup.date().required(),
+      vaccineDoses: Yup.array().of(Yup.string()),
+      vaccineMandatory: Yup.boolean().required(Messages.MSG_E003("vaccineMandatory")),
       vaccinationLocal: Yup.string(),
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E003("userId"));
+      return response.status(400).json({ error: Messages.MSG_A002 });
     }
 
     const {
       userId,
+      dependentId,
       vaccineName,
       vaccineType,
       vaccineManufacturer,
       vaccineMandatory,
       vaccineDoses,
-      vaccinationDate,
       vaccinationLocal
     } = request.body;
 
+    const userExists = await prisma.user.findFirst(
+      {
+        where: {
+          id: userId
+        },
+      });
+
+    if (!userExists) return response.status(400).json({ error: Messages.MSG_E007 });
+
     const vaccinationExists = await prisma.vaccination.findFirst({
       where: {
-        userId,
-        OR: [
+        AND: [
+          { userId },
+          { dependentId },
           { vaccineName },
           { vaccineType },
           { vaccineManufacturer }
@@ -79,12 +100,12 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const vaccination = await prisma.vaccination.create({
       data: {
         userId,
+        dependentId,
         vaccineName,
         vaccineType,
         vaccineManufacturer,
         vaccineMandatory,
         vaccineDoses,
-        vaccinationDate,
         vaccinationLocal
       }
     });
@@ -96,35 +117,38 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   if (request.method === "PUT") {
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
+      id: Yup.number().required(Messages.MSG_E003("id")),
+      userId: Yup.number().required(),
+      dependentId: Yup.number(),
       vaccineName: Yup.string(),
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
       vaccineMandatory: Yup.boolean(),
-      vaccineDoses: Yup.array().of(Yup.date()),
-      vaccinationDate: Yup.date(),
+      vaccineDoses: Yup.array().of(Yup.string()),
       vaccinationLocal: Yup.string(),
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E003("id"));
+      return response.status(400).json({ error: Messages.MSG_A002 });
     }
 
     const {
       id,
       userId,
+      dependentId,
       vaccineName,
       vaccineType,
       vaccineManufacturer,
       vaccineMandatory,
       vaccineDoses,
-      vaccinationDate,
       vaccinationLocal
     } = request.body;
 
     let vaccinationExists = await prisma.vaccination.findFirst({
       where: {
         id,
+        userId,
+        dependentId
       },
     });
 
@@ -135,15 +159,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     vaccinationExists = await prisma.vaccination.findFirst({
       where: {
         userId,
-        OR: [
-          { vaccineName },
-          { vaccineType },
-          { vaccineManufacturer }
-        ],
+        vaccineName,
+        vaccineType,
+        vaccineManufacturer,
+        dependentId: dependentId ? dependentId : null
       },
     });
 
-    if (vaccinationExists) {
+    if (id !== vaccinationExists.id) {
       return response.status(400).json({ error: Messages.MSG_E009 });
     }
 
@@ -153,12 +176,12 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       },
       data: {
         userId,
+        dependentId,
         vaccineName,
         vaccineType,
         vaccineManufacturer,
         vaccineMandatory,
         vaccineDoses,
-        vaccinationDate,
         vaccinationLocal
       }
     });
@@ -177,10 +200,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       return response.status(400).send(Messages.MSG_E003("id"));
     }
 
-    const {
-      id,
-
-    } = request.body;
+    const { id } = request.body;
 
     let vaccinationExists = await prisma.vaccination.findFirst({
       where: {
@@ -200,6 +220,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    return response.status(200).send(Messages.MSG_S002);
+    return response.status(200).send(Messages.MSG_SUCCESS_MESSAGE("Vacinação", "deletada"));
   }
 }

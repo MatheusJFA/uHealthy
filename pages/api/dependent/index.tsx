@@ -60,6 +60,43 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
       return response.status(200).send({ dependente: dependent });
     }
+
+    if (request.method === "GET") {
+      const schema = Yup.object().shape({
+        userId: Yup.number().required(),
+      });
+
+      if (!(await schema.isValid(request.query))) {
+        return response.status(400).send(Messages.MSG_E003("userId"));
+      }
+
+      const { userId } = request.query;
+
+      const userExists = await prisma.user.findFirst({
+        where: {
+          id: Number(userId)
+        }
+      })
+
+      if (!userExists) {
+        return response.status(400).json({ error: Messages.MSG_E007 });
+      }
+
+      const dependents = await prisma.dependent.findMany({
+        where: {
+          userId: Number(userId)
+        }
+      });
+
+      if (!dependents) {
+        return response.status(400).json({ error: Messages.MSG_E010 });
+      }
+
+      await prisma.$disconnect();
+
+      return response.status(200).send({ dependentes: dependents });
+    }
+
   } catch (error) {
     response.status(500).json({ error: error });
   }
