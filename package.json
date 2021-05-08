@@ -8,7 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^2.17.0",
+    "@material-ui/core": "^4.11.3",
+    "@prisma/client": "^2.21.2",
     "@vercel/node": "^1.9.1",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.3",
@@ -17,6 +18,7 @@
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-spring": "^9.1.1",
     "react-toastify": "^7.0.3",
     "remask": "0.1.0-alpha.5",
     "tailwindcss": "^2.0.4",
@@ -25,12 +27,11 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.17.0",
     "@types/node": "^14.14.33",
     "@types/react": "^17.0.3",
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.9",
-    "prisma": "^2.17.0",
+    "prisma": "^2.21.2",
     "typescript": "^4.2.3",
     "webpack": "^4.0.1"
   }

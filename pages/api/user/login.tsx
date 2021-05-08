@@ -14,12 +14,12 @@ const prisma = new PrismaClient();
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "POST") {
     const schema = Yup.object().shape({
-      cpf: Yup.string().min(11).max(14).required(),
-      password: Yup.string().required(),
+      cpf: Yup.string().min(11).max(14).required(Messages.MSG_E003("CPF")),
+      password: Yup.string().required(Messages.MSG_E003("Senha")),
     });
 
     if (!(await schema.isValid(request.body))) {
-      return response.status(400).send(Messages.MSG_E000);
+      return response.status(400).send(Messages.MSG_A002);
     }
 
     const { cpf, password } = request.body;
@@ -40,10 +40,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     await prisma.$disconnect();
 
-    const { id, name, email } = user;
+    const { id, name, email, } = user;
 
     return response.status(200).send({
-      token: jwt.sign({ id, user }, authConfig.secret, {
+      token: jwt.sign({ id, name, email, cpf }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),
     });
