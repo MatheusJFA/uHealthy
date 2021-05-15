@@ -1,10 +1,12 @@
-import Router from 'next/router';
 import React, { useState, useEffect, useCallback } from 'react';
+import Router from 'next/router';
+import { useGlobalContext } from '../common/hooks/useGlobalContext';
 import { toast } from 'react-toastify';
 import jwt from 'jsonwebtoken';
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
+import Loading from '../components/Loading';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,23 +19,26 @@ export default function Table() {
   const [vaccineID, setVaccineID] = useState(undefined);
 
   const [showModal, setShowModal] = useState(false);
+  const { changeLoading } = useGlobalContext();
   const [loading, setLoading] = useState(false);
 
 
-  async function verification() {
-    var jwtData = localStorage.getItem("JWT");
-    const data = await jwt.decode(jwtData);
-    setTimeout(() => {
+  useEffect(() => {
+    async function verification() {
+      setLoading(true)
+      changeLoading(true);
+      var jwtData = localStorage.getItem("JWT");
+      if (!jwtData) {
+        toast.error(Messages.MSG_E006);
+        Router.push("/")
+      }
+      const data = await jwt.decode(jwtData);
       setName(data.name);
       setCPF(data.cpf);
       setUserID(data.id);
-    }, 2000);
-  }
-
-  useEffect(() => {
+    }
     verification();
-  }, [loading, name, cpf]);
-
+  }, [changeLoading]);
 
   useEffect(() => {
     async function getVaccines() {
@@ -41,12 +46,15 @@ export default function Table() {
       const data = await response.json();
 
       setVaccines(data.vaccinations);
+
+      changeLoading(false);
+      setLoading(false);
     }
 
     if (userID)
       getVaccines();
     setVaccineID(undefined);
-  }, [loading, showModal, userID]);
+  }, [changeLoading,showModal, userID]);
 
   function openModal() {
     setShowModal(!showModal);
@@ -152,6 +160,8 @@ export default function Table() {
         actions=""
         form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
       />
+
+
     </>
   )
 }
