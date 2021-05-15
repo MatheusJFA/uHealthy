@@ -1,10 +1,12 @@
-import Router from 'next/router';
 import React, { useState, useEffect, useCallback } from 'react';
+import Router from 'next/router';
+import { useGlobalContext } from '../common/hooks/useGlobalContext';
 import { toast } from 'react-toastify';
 import jwt from 'jsonwebtoken';
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
+import Loading from '../components/Loading';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,35 +20,42 @@ export default function Table() {
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-
-
-  async function verification() {
-    var jwtData = localStorage.getItem("JWT");
-    const data = await jwt.decode(jwtData);
-    setTimeout(() => {
-      setName(data.name);
-      setCPF(data.cpf);
-      setUserID(data.id);
-    }, 2000);
-  }
-
-  useEffect(() => {
-    verification();
-  }, [loading, name, cpf]);
+  const { changeLoading } = useGlobalContext();
 
 
   useEffect(() => {
     async function getVaccines() {
-      const response = await fetch(`/api/vaccination?userId=${userID}`);
-      const data = await response.json();
+      if (userID) {
+        const response = await fetch(`/api/vaccination?userId=${userID}`);
+        const data = await response.json();
 
-      setVaccines(data.vaccinations);
+        setVaccines(data.vaccinations);
+        setVaccineID(undefined);
+      }
     }
 
-    if (userID)
-      getVaccines();
-    setVaccineID(undefined);
-  }, [loading, showModal, userID]);
+    async function verification() {
+      setLoading(true);
+      changeLoading(true);
+      var jwtData = localStorage.getItem("JWT");
+      if (!jwtData) {
+        setLoading(false);
+        changeLoading(false);
+        toast.error(Messages.MSG_E006);
+        Router.push("/")
+      } else {
+        const data = await jwt.decode(jwtData);
+        setName(data.name);
+        setCPF(data.cpf);
+        setUserID(data.id);
+        getVaccines();
+        setLoading(false);
+        changeLoading(false);
+      }
+    }
+    verification();
+  }, [showModal,userID]);
+
 
   function openModal() {
     setShowModal(!showModal);
@@ -152,6 +161,9 @@ export default function Table() {
         actions=""
         form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
       />
+
+      {changeLoading && <Loading />}
+
     </>
   )
 }
