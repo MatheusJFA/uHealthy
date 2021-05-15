@@ -19,43 +19,42 @@ export default function Table() {
   const [vaccineID, setVaccineID] = useState(undefined);
 
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { changeLoading } = useGlobalContext();
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
-    async function getVaccines() {
-      if (userID) {
-        const response = await fetch(`/api/vaccination?userId=${userID}`);
-        const data = await response.json();
-
-        setVaccines(data.vaccinations);
-        setVaccineID(undefined);
-      }
-    }
-
     async function verification() {
-      setLoading(true);
+      setLoading(true)
       changeLoading(true);
       var jwtData = localStorage.getItem("JWT");
       if (!jwtData) {
-        setLoading(false);
-        changeLoading(false);
         toast.error(Messages.MSG_E006);
         Router.push("/")
-      } else {
-        const data = await jwt.decode(jwtData);
-        setName(data.name);
-        setCPF(data.cpf);
-        setUserID(data.id);
-        getVaccines();
-        setLoading(false);
-        changeLoading(false);
       }
+      const data = await jwt.decode(jwtData);
+      setName(data.name);
+      setCPF(data.cpf);
+      setUserID(data.id);
     }
     verification();
-  }, [showModal,userID]);
+  }, [changeLoading]);
 
+  useEffect(() => {
+    async function getVaccines() {
+      const response = await fetch(`/api/vaccination?userId=${userID}`);
+      const data = await response.json();
+
+      setVaccines(data.vaccinations);
+
+      changeLoading(false);
+      setLoading(false);
+    }
+
+    if (userID)
+      getVaccines();
+    setVaccineID(undefined);
+  }, [changeLoading,showModal, userID]);
 
   function openModal() {
     setShowModal(!showModal);
@@ -162,7 +161,6 @@ export default function Table() {
         form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
       />
 
-      {changeLoading && <Loading />}
 
     </>
   )

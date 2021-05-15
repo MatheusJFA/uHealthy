@@ -1,5 +1,4 @@
 import React from 'react'
-import { LinearProgress } from '@material-ui/core';
 import { useGlobalContext } from '../../common/hooks/useGlobalContext';
 
 
@@ -9,7 +8,9 @@ export default function Loading() {
     return (
         <>
             {loading && <div className="loading flex justify-center items-center"  >
-              <LinearProgress color="secondary" />
+                <svg className="svg-loading animate-spin h-10 w-10" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" />
+                </svg>
             </div>}
         </>
 
