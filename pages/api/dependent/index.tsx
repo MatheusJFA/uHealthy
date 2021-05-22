@@ -17,12 +17,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       const schema = Yup.object().shape({
         userId: Yup.number().required(),
         name: Yup.string().required(),
+        cpf: Yup.string().required(),
         birthDate: Yup.date().required().max(today),
       });
 
       if (!(await schema.isValid(request.body))) return response.status(400).json({ error: Messages.MSG_A002 });
 
-      let { userId, name, birthDate } = request.body;
+      let { userId, name, cpf, birthDate } = request.body;
 
       const userExists = await prisma.user.findFirst(
         {
@@ -41,6 +42,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             AND: [
               { userId },
               { name },
+              { cpf },
             ],
           }
         }
@@ -52,6 +54,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         data: {
           userId,
           name,
+          cpf,
           birthDate
         },
       });
