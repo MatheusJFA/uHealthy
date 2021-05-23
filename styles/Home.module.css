@@ -19,6 +19,7 @@
 }
 
 .title {
+  @apply text-center;
   margin: 2rem 0;
 }
 

@@ -121,7 +121,7 @@ export default function Register() {
         />
 
         <div className={styles.login}>
-          <h1 className="mt-10 mb-5 md:mt-3 md:mb-3">Cadastre-se</h1>
+          <h1 className="mt-10 mb-5 md:mt-3 md:mb-3 text-center">Cadastre-se</h1>
           <form>
             <div className={styles.inputText}>
               <Input

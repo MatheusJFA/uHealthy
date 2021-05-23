@@ -6,9 +6,11 @@ import jwt from 'jsonwebtoken';
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
+import Header from '../components/Header';
 import Loading from '../components/Loading';
 
 import { v4 as uuidv4 } from 'uuid';
+
 
 export default function Table() {
   const [userID, setUserID] = useState("");
@@ -98,7 +100,7 @@ export default function Table() {
 
   return (
     <>
-      <div className="header-login">
+      {/* <div className="header-login">
         <div className="nav-page">
           <img className="user-perfil" src="../man.svg" alt="Imagem padrão de usuário" />
           <div>
@@ -107,7 +109,8 @@ export default function Table() {
           </div>
         </div>
         <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => logOut()}> Sair </button>
-      </div>
+      </div> */}
+      <Header cpf={cpf} name={name} onClick={() => logOut()}/>
 
       <nav className="navbar">
         <ul>

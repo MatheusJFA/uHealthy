@@ -8,6 +8,7 @@ import "../styles/globals.css";
 import "../styles/Table.css";
 import "../styles/Toggle.css";
 import "../styles/Loading.css";
+import '../styles/Dependents.css';
 import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
