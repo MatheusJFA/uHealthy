@@ -2,6 +2,7 @@ import { Router } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { useGlobalContext } from '../../../common/hooks/useGlobalContext';
 
 import Messages from '../../../utils/messages';
 import Input from '../../Input';
@@ -25,6 +26,7 @@ export default function Modal(property: IModal) {
   const [vaccineManufacturer, setVaccineManufacturer] = useState("");
   const [vaccineMandatory, setVaccineMandatory] = useState(false);
   const [vaccinationLocal, setVaccinationLocal] = useState("");
+  const { changeLoading } = useGlobalContext();
 
   let [vaccineDoses, setVaccineDoses] = useState([]);
 
@@ -67,6 +69,8 @@ export default function Modal(property: IModal) {
 
   useEffect(() => {
     async function getVaccine() {
+      changeLoading(true);
+      setLoading(true);
       if (vaccineId) {
         const response = await fetch(`/api/vaccination/vaccine?id=${vaccineId}`);
         const data = await response.json();
@@ -84,6 +88,8 @@ export default function Modal(property: IModal) {
           setVaccinationLocal(vaccination.vaccinationLocal);
 
           setVaccineDoses(doses);
+          changeLoading(false);
+          setLoading(false);
         }
       }
     }
@@ -123,7 +129,9 @@ export default function Modal(property: IModal) {
     if (validation) {
       if (vaccineId) {
         try {
-          setLoading(false);
+          setLoading(true);
+          changeLoading(true);
+          
           const response = await fetch("/api/vaccination", {
             method: "PUT",
             headers: {
@@ -139,7 +147,8 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
             property.showModal(false);
-            await setLoading(true);
+            setLoading(false);
+            changeLoading(false);
             return result;
           }
         } catch (error) {
@@ -148,7 +157,8 @@ export default function Modal(property: IModal) {
       }
       else {
         try {
-          setLoading(false);
+          setLoading(true);
+          changeLoading(true);
           const response = await fetch("/api/vaccination", {
             method: "POST",
             headers: {
@@ -164,7 +174,8 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
             property.showModal(false);
-            setLoading(true);
+            setLoading(false);
+            changeLoading(false);
             return result;
           }
         }
@@ -209,7 +220,7 @@ export default function Modal(property: IModal) {
                 onChange={e => setVaccineType(e.target.value)}
                 placeholder="Digite o tipo da vacina"
                 type="text" />
-
+ 
               <div className="flex flex-row w-full gap-10 items-center justify-items-center">
                 <Input
                   label="Fabricante da Vacina"

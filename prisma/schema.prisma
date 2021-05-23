@@ -25,6 +25,7 @@ model Dependent {
   id          Int           @id @default(autoincrement())
   userId      Int
   name        String
+  cpf         String
   birthDate   DateTime
   createdAt   DateTime      @default(now())
   active      Boolean       @default(true)
