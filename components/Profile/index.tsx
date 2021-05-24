@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IProfile {
-    nome: string;
+    name: string;
     cpf: string;
 }
 
@@ -11,7 +11,7 @@ export function Profile(property: IProfile) {
             <img src="../man.svg" className=" w-32" alt="Perfil user" />
             <div className="user-dates pl-6">
                 <div className="font-semibold">Nome do Usuário:</div>
-                <div className="user-name">{property.nome} </div>
+                <div className="user-name">{property.name} </div>
                 <div className="font-semibold">CPF: </div>
                 <div className="user-cpf"> {property.cpf} </div>
             </div>

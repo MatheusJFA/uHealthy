@@ -83,7 +83,7 @@ export default function Dependent() {
             <div className="flex flex-col flex-grow pl-8 pr-8">
                 <div className="flex flex-col">
                     <h1 className="font-semibold mb-4 mt-4"> Suas Informações: </h1>
-                    <Profile nome={name} cpf={cpf} />
+                    <Profile name={name} cpf={cpf} />
                 </div>
 
                 <div>
