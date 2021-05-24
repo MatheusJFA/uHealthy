@@ -3,21 +3,11 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 
 import { Profile } from '../components/Profile';
-import { toast } from 'react-toastify';
-import { Router } from 'next/router';
-import Messages from '../utils/messages';
 import DependentList from '../components/DependentList';
 
 
 export default function Dependent() {
 
-
-    function logOut() {
-        toast.success(Messages.MSG_S002);
-        localStorage.removeItem("JWT");
-    }
-
-    
     const dependentList = [
         { id: 1, name: "Leanne Graham" },
         { id: 2, name: "Ervin Howell" },
@@ -28,7 +18,7 @@ export default function Dependent() {
 
     return (
         <>
-            <Header onClick={() => logOut()} />
+            <Header />
             <div className="flex flex-col flex-grow pl-8 pr-8">
                 <div className="flex flex-col">
                     <h1 className="font-semibold mb-4 mt-4"> Suas Informações: </h1>
