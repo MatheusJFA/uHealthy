@@ -56,23 +56,23 @@ export default function Dependent() {
         getDependents();
     }, [changeLoading, showModal, userID]);
 
-    function logOut() {
-        toast.success(Messages.MSG_S002);
-        localStorage.removeItem("JWT");
-        Router.push('/');
-    }
-
     function openModal() {
         setShowModal(!showModal);
+    }
+
+    function GoToVaccineTable() {
+        Router.push('/table');
     }
 
     const renderDependents = (dependent) => {
         return (
             <div className="border-red-500 w-40  border-solid border-2 flex flex-col  m-5 items-center rounded relative">
-                <img className="w-full p-1" src="../man.svg" alt="" />
-                <div className=" p-2">
-                    <p className="pb-1">{dependent.name}</p>
-                </div>
+                <button onClick={() => GoToVaccineTable()}>
+                    <img className="w-full p-1" src="../man.svg" alt="" />
+                    <div className=" p-2">
+                        <p className="pb-1">{dependent.name}</p>
+                    </div>
+                </button>
             </div>
         );
     }
