@@ -7,10 +7,8 @@ import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
 import Header from '../components/Header';
-import Loading from '../components/Loading';
 
 import { v4 as uuidv4 } from 'uuid';
-
 
 export default function Table() {
   const [userID, setUserID] = useState("");
@@ -56,7 +54,7 @@ export default function Table() {
     if (userID)
       getVaccines();
     setVaccineID(undefined);
-  }, [changeLoading,showModal, userID]);
+  }, [changeLoading, showModal, userID]);
 
   function openModal() {
     setShowModal(!showModal);
@@ -77,14 +75,9 @@ export default function Table() {
   }
 
   function onRowClick(id) {
-    setTimeout(() => {
-      setVaccineID(id)
-    }, 2000);
-
+    setVaccineID(id)
     openModal();
   }
-
-
 
   const renderVaccines = (vaccine) => {
     return (
@@ -110,7 +103,7 @@ export default function Table() {
         </div>
         <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => logOut()}> Sair </button>
       </div> */}
-      <Header cpf={cpf} name={name} onClick={() => logOut()}/>
+      <Header cpf={cpf} name={name} onClick={() => logOut()} />
 
       <nav className="navbar">
         <ul>
@@ -144,7 +137,7 @@ export default function Table() {
         </div>
       }
 
-      {loading && vaccines.length <= 0 &&
+      {!loading && vaccines.length <= 0 &&
         <div className="flex flex-grow justify-center items-center">
           <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
         </div>

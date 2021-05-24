@@ -46,7 +46,7 @@ export default function Home() {
         else {
           toast.success(Messages.MSG_S001);
           localStorage.setItem("JWT", result.token);
-          Router.push('/table');
+          Router.push('/dependents');
         }
       }
     } catch (error) {
@@ -83,7 +83,7 @@ export default function Home() {
 
         <form action="" className="mt-20 mb-20 md:mb-10 md:mt-10">
           <div className={styles.login}>
-            <h1 className={styles.title} >Bem-vindo!</h1>
+            <h1 className={styles.title}>Bem-vindo!</h1>
             <div className={styles.inputText}>
               <Input
                 label="cpf"

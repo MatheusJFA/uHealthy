@@ -11,9 +11,6 @@ import ToggleButton from '../../ToggleButton';
 
 import CPFValidate from "../../../utils/cpfValidation";
 
-import styles from "../styles/Register.module.css";
-
-
 interface IModal {
   userID: string;
   showModal: any;
@@ -22,12 +19,12 @@ interface IModal {
 export default function Modal(property: IModal) {
   const userId = property.userID;
 
+  const [name, setName] = useState("");
+  const [cpf, setCPF] = useState("");
+  const [birthDate, setBirthDate] = useState();
+
   const [loading, setLoading] = useState(false);
   const { changeLoading } = useGlobalContext();
-
-  const [name, setName] = useState();
-  const [cpf, setCPF] = useState();
-  const [birthDate, setBirthDate] = useState();
 
   function ValidateCPF(): boolean {
     return CPFValidate(cpf);
@@ -36,11 +33,8 @@ export default function Modal(property: IModal) {
   async function validate() {
     const schema = Yup.object().shape({
       cpf: Yup.string().required(Messages.MSG_E003("CPF")),
-      email: Yup.string().email(Messages.MSG_E003("Email")).required(),
       name: Yup.string().required(Messages.MSG_E003("Nome")),
-      password: Yup.string().min(6).max(15).required(Messages.MSG_E003("Password")),
-      passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password'), null], Messages.MSG_A000),
+      birthDate: Yup.date().required()
     });
 
     var errorsList = [];
@@ -74,13 +68,15 @@ export default function Modal(property: IModal) {
       var validation = await validate();
 
       if (validation) {
+        changeLoading(true);
+        setLoading(true);
 
-        const response = await fetch("/api/user/dependent", {
+        const response = await fetch("/api/dependent", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ userId, cpf, name, birthDate })
+          body: JSON.stringify({ userId, name, cpf, birthDate })
         });
 
         const result = await response.json();
@@ -91,6 +87,8 @@ export default function Modal(property: IModal) {
           toast.success(Messages.MSG_S000);
           return result;
         }
+        changeLoading(false);
+        setLoading(false);
       } else {
         return toast.warning(Messages.MSG_A002);
       }
@@ -98,7 +96,6 @@ export default function Modal(property: IModal) {
       toast.error(error);
     }
   }
-
 
   return (
     <>
@@ -118,19 +115,19 @@ export default function Modal(property: IModal) {
                 label="CPF do dependente"
                 id="cpf"
                 value={cpf}
-                onChange={e => setCPF(mask(e.target.value))}
+                onChange={e => setCPF(mask(e.target.value, ['999.999.999-99']))}
                 placeholder="XXX.XXX.XXX-XX"
                 type="text" />
 
               <Input
-                label="data de nascimento do dependente"
+                label="data de nascimento"
                 id="dataNascimento"
                 placeholder=" "
                 value={birthDate}
                 onChange={e => setBirthDate(e.target.value)}
                 type="date" />
 
-              <div className={styles.footerLogin}>
+              <div className="mt-10">
                 <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" onClick={(event) => Register(event)}>Cadastrar</button>
               </div>
             </div>

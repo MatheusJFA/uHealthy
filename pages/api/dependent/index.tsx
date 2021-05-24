@@ -43,7 +43,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               { userId },
               { name },
               { cpf },
-            ],
+            ], 
           }
         }
       );
