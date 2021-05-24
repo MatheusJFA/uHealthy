@@ -79,7 +79,7 @@ export default function Dependent() {
 
     return (
         <>
-            <Header onClick={() => logOut()} />
+            <Header />
             <div className="flex flex-col flex-grow pl-8 pr-8">
                 <div className="flex flex-col">
                     <h1 className="font-semibold mb-4 mt-4"> Suas Informações: </h1>
