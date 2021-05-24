@@ -7,6 +7,10 @@
     padding: 0 2rem 0 2rem;
 }
 
+.header-actions button {
+  margin-left: 16px;
+}
+
 .user-name {
     font-weight: 500;
     letter-spacing: 2px;

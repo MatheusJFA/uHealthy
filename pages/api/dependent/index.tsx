@@ -41,7 +41,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
           where: {
             AND: [
               { userId },
-              { name },
               { cpf },
             ],
           }
