@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function Table() {
   const [userID, setUserID] = useState("");
-  const [dependentId, setDependentId] = useState();
+  const [dependentId, setDependentId] = useState("");
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
@@ -46,7 +46,7 @@ export default function Table() {
   useEffect(() => {
     async function getVaccines() {
       let response;
-      if (!dependentId) {
+      if (dependentId === "") {
         response = await fetch(`/api/vaccination?userId=${userID}`);
       }
       else {
@@ -54,6 +54,7 @@ export default function Table() {
       }
 
       const data = await response.json();
+      console.log(data);
 
       setVaccines(data.vaccinations);
 

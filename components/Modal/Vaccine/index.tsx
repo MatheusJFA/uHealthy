@@ -18,6 +18,7 @@ interface IModal {
 export default function Modal(property: IModal) {
   const userId = property.userID;
   const vaccineId = property.vaccineId;
+  const [dependentId, setDependentId] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +82,7 @@ export default function Modal(property: IModal) {
           const vaccination = data.vaccination;
           const doses = vaccination.vaccineDoses;
 
+
           setVaccineName(vaccination.vaccineName);
           setVaccineType(vaccination.vaccineType);
           setVaccineManufacturer(vaccination.vaccineManufacturer);
@@ -95,6 +97,9 @@ export default function Modal(property: IModal) {
     }
     if (vaccineId)
       getVaccine();
+
+    var dependentIdData = localStorage.getItem("dependentId");
+    setDependentId(dependentIdData ? dependentIdData : "");
   }, [vaccineId]);
 
   async function discard() {
@@ -131,13 +136,13 @@ export default function Modal(property: IModal) {
         try {
           setLoading(true);
           changeLoading(true);
-          
+
           const response = await fetch("/api/vaccination", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ id: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ id: vaccineId, userId, dependentId: Number(dependentId), vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
           const result = await response.json();
@@ -156,16 +161,32 @@ export default function Modal(property: IModal) {
         }
       }
       else {
+        debugger
         try {
           setLoading(true);
           changeLoading(true);
-          const response = await fetch("/api/vaccination", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
-          });
+
+          let response;
+
+          if (dependentId != "") {
+            response = await fetch("/api/vaccination", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ userId, dependentId: Number(dependentId), vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            });
+          }
+          else {
+            response = await fetch("/api/vaccination", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            });
+          }
+
 
           const result = await response.json();
 
@@ -220,7 +241,7 @@ export default function Modal(property: IModal) {
                 onChange={e => setVaccineType(e.target.value)}
                 placeholder="Digite o tipo da vacina"
                 type="text" />
- 
+
               <div className="flex flex-row w-full gap-10 items-center justify-items-center">
                 <Input
                   label="Fabricante da Vacina"

@@ -46,6 +46,7 @@ export default function Dependent() {
             setLoading(true);
             const response = await fetch(`/api/dependent?userId=${userID}`);
             const data = await response.json();
+            localStorage.setItem("dependentId", "");
 
             setDependentes(data.dependentes);
 
