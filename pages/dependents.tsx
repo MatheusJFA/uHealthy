@@ -60,14 +60,15 @@ export default function Dependent() {
         setShowModal(!showModal);
     }
 
-    function GoToVaccineTable() {
+    function GoToVaccineTable(dependentId) {
+        localStorage.setItem("dependentId", dependentId);
         Router.push('/table');
     }
 
     const renderDependents = (dependent) => {
         return (
             <div className="border-red-500 w-40  border-solid border-2 flex flex-col  m-5 items-center rounded relative">
-                <button onClick={() => GoToVaccineTable()}>
+                <button onClick={() => GoToVaccineTable(dependent.id)}>
                     <img className="w-full p-1" src="../man.svg" alt="" />
                     <div className=" p-2">
                         <p className="pb-1">{dependent.name}</p>

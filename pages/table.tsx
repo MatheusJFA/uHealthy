@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function Table() {
   const [userID, setUserID] = useState("");
+  const [dependentId, setDependentId] = useState();
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
@@ -33,6 +34,8 @@ export default function Table() {
         Router.push("/")
       }
       const data = await jwt.decode(jwtData);
+      var dependentIdData = localStorage.getItem("dependentId");
+      setDependentId(dependentIdData ? dependentIdData : "");
       setName(data.name);
       setCPF(data.cpf);
       setUserID(data.id);
@@ -42,7 +45,14 @@ export default function Table() {
 
   useEffect(() => {
     async function getVaccines() {
-      const response = await fetch(`/api/vaccination?userId=${userID}`);
+      let response;
+      if (!dependentId) {
+        response = await fetch(`/api/vaccination?userId=${userID}`);
+      }
+      else {
+        response = await fetch(`/api/vaccination?userId=${userID}&dependentId=${dependentId}`);
+      }
+
       const data = await response.json();
 
       setVaccines(data.vaccinations);
@@ -58,12 +68,6 @@ export default function Table() {
 
   function openModal() {
     setShowModal(!showModal);
-  }
-
-  function logOut() {
-    toast.success(Messages.MSG_S002);
-    localStorage.removeItem("JWT");
-    Router.push('/');
   }
 
   const renderDoses = (dose) => {
@@ -103,7 +107,7 @@ export default function Table() {
         </div>
         <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => logOut()}> Sair </button>
       </div> */}
-      <Header cpf={cpf} name={name} onClick={() => logOut()} />
+      <Header cpf={cpf} name={name} showBack />
 
       <nav className="navbar">
         <ul>
