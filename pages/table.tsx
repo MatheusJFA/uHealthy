@@ -156,7 +156,7 @@ export default function Table() {
           <ModalVaccine
             showModal={setShowModal}
             userID={userID}
-            vaccineID={vaccineID}
+            vaccineId={vaccineID}
           />
         }
       />
