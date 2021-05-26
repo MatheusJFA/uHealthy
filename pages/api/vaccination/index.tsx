@@ -156,20 +156,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       return response.status(400).json({ error: Messages.MSG_E001("Vacina") });
     }
 
-    vaccinationExists = await prisma.vaccination.findFirst({
-      where: {
-        userId,
-        vaccineName,
-        vaccineType,
-        vaccineManufacturer,
-        dependentId: dependentId ? dependentId : null
-      },
-    });
-
-    if (id !== vaccinationExists.id) {
-      return response.status(400).json({ error: Messages.MSG_E009 });
-    }
-
     const vaccination = await prisma.vaccination.update({
       where: {
         id,

@@ -72,7 +72,7 @@ export default function Modal(property: IModal) {
       if (vaccineId) {
         changeLoading(true);
         setLoading(true);
-  
+
         const response = await fetch(`/api/vaccination/vaccine?id=${vaccineId}`);
         const data = await response.json();
 
@@ -95,13 +95,13 @@ export default function Modal(property: IModal) {
       }
     }
 
-    if (vaccineId){
+    if (vaccineId) {
       getVaccine();
     }
 
-    var dependentIdData = localStorage.getItem("dependentId");
-    setDependentId(dependentIdData ? dependentIdData : "");
-  }, [vaccineId, loading]);
+    const dependentData = JSON.parse(localStorage.getItem("dependent"));
+    setDependentId(dependentData ? dependentData.id : "");
+  }, [vaccineId]);
 
   async function discard() {
     try {
@@ -143,7 +143,7 @@ export default function Modal(property: IModal) {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ id: vaccineId, userId, dependentId: Number(dependentId), vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            body: JSON.stringify({ id: vaccineId, userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
           });
 
           const result = await response.json();
@@ -197,7 +197,7 @@ export default function Modal(property: IModal) {
             setLoading(false);
             changeLoading(false);
             return result;
-          }     
+          }
         }
         catch (error) {
           toast.error(error);
