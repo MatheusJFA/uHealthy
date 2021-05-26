@@ -21,15 +21,14 @@ export default function Modal(property: IModal) {
   const [dependentId, setDependentId] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const { changeLoading } = useGlobalContext();
 
   const [vaccineName, setVaccineName] = useState("");
   const [vaccineType, setVaccineType] = useState("");
   const [vaccineManufacturer, setVaccineManufacturer] = useState("");
   const [vaccineMandatory, setVaccineMandatory] = useState(false);
   const [vaccinationLocal, setVaccinationLocal] = useState("");
-  const { changeLoading } = useGlobalContext();
-
-  let [vaccineDoses, setVaccineDoses] = useState([]);
+  const [vaccineDoses, setVaccineDoses] = useState([]);
 
   async function validate() {
     const schema = Yup.object().shape({
@@ -60,7 +59,6 @@ export default function Modal(property: IModal) {
     if (!errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
-
     if (!(await schema.isValid({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }))) {
       return false;
     }
@@ -70,9 +68,11 @@ export default function Modal(property: IModal) {
 
   useEffect(() => {
     async function getVaccine() {
-      changeLoading(true);
-      setLoading(true);
+
       if (vaccineId) {
+        changeLoading(true);
+        setLoading(true);
+  
         const response = await fetch(`/api/vaccination/vaccine?id=${vaccineId}`);
         const data = await response.json();
 
@@ -82,7 +82,6 @@ export default function Modal(property: IModal) {
           const vaccination = data.vaccination;
           const doses = vaccination.vaccineDoses;
 
-
           setVaccineName(vaccination.vaccineName);
           setVaccineType(vaccination.vaccineType);
           setVaccineManufacturer(vaccination.vaccineManufacturer);
@@ -90,17 +89,19 @@ export default function Modal(property: IModal) {
           setVaccinationLocal(vaccination.vaccinationLocal);
 
           setVaccineDoses(doses);
-          changeLoading(false);
-          setLoading(false);
         }
+        changeLoading(false);
+        setLoading(false);
       }
     }
-    if (vaccineId)
+
+    if (vaccineId){
       getVaccine();
+    }
 
     var dependentIdData = localStorage.getItem("dependentId");
     setDependentId(dependentIdData ? dependentIdData : "");
-  }, [vaccineId]);
+  }, [vaccineId, loading]);
 
   async function discard() {
     try {
@@ -161,7 +162,6 @@ export default function Modal(property: IModal) {
         }
       }
       else {
-        debugger
         try {
           setLoading(true);
           changeLoading(true);
@@ -187,7 +187,6 @@ export default function Modal(property: IModal) {
             });
           }
 
-
           const result = await response.json();
 
           if (result.error)
@@ -198,7 +197,7 @@ export default function Modal(property: IModal) {
             setLoading(false);
             changeLoading(false);
             return result;
-          }
+          }     
         }
         catch (error) {
           toast.error(error);
@@ -222,7 +221,7 @@ export default function Modal(property: IModal) {
 
   return (
     <>
-      {property.showModal &&
+      {property.showModal && !loading &&
         <form>
           <div className="background">
             <div className="conteudoModal">

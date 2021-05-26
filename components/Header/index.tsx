@@ -10,8 +10,6 @@ interface IHeader {
     showBack?: boolean
 }
 
-
-
 export default function Header(property: IHeader) {
     function logOut() {
         toast.success(Messages.MSG_S002);
