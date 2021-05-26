@@ -84,7 +84,11 @@ export default function Table() {
 
   function onRowClick(id) {
     setVaccineID(id);
+    changeLoading(true);
+    setLoading(true);
     openModal();
+    changeLoading(false);
+    setLoading(false);
   }
 
   const renderVaccines = (vaccine) => {
