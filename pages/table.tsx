@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function Table() {
   const [userID, setUserID] = useState("");
-  const [dependentId, setDependentId] = useState("");
+  const [dependent, setDependent] = useState({ id: -1, name: "", cpf: "" });
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
@@ -34,8 +34,11 @@ export default function Table() {
         Router.push("/")
       }
       const data = await jwt.decode(jwtData);
-      var dependentIdData = localStorage.getItem("dependentId");
-      setDependentId(dependentIdData ? dependentIdData : "");
+      const dependentData = JSON.parse(localStorage.getItem("dependent"));
+      if (dependentData) {
+        setDependent(dependentData);
+      }
+
       setName(data.name);
       setCPF(data.cpf);
       setUserID(data.id);
@@ -46,11 +49,11 @@ export default function Table() {
   useEffect(() => {
     async function getVaccines() {
       let response;
-      if (dependentId === "") {
+      if (dependent.id === -1) {
         response = await fetch(`/api/vaccination?userId=${userID}`);
       }
       else {
-        response = await fetch(`/api/vaccination?userId=${userID}&dependentId=${dependentId}`);
+        response = await fetch(`/api/vaccination?userId=${userID}&dependentId=${dependent.id}`);
       }
 
       const data = await response.json();
@@ -98,7 +101,7 @@ export default function Table() {
 
   return (
     <>
-      <Header cpf={cpf} name={name} showBack />
+      <Header cpf={dependent.cpf !== "" ? dependent.cpf : cpf} name={dependent.name !== "" ? dependent.name : name} showBack />
 
       <nav className="navbar">
         <ul>
