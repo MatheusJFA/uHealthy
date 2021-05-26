@@ -1,3 +1,7 @@
+.user-information:hover {
+ cursor: pointer;
+}
+
 .user-add:hover {
     cursor: pointer;
 }

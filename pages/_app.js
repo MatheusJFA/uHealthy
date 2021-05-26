@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import GlobalProvider from '../contexts/GlobalContext';
+import Header from '../components/Header'
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
 

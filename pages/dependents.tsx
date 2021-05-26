@@ -68,13 +68,11 @@ export default function Dependent() {
 
     const renderDependents = (dependent) => {
         return (
-            <div className="border-red-500 w-40  border-solid border-2 flex flex-col  m-5 items-center rounded relative">
-                <button onClick={() => GoToVaccineTable(dependent)}>
-                    <img className="w-full p-1" src="../man.svg" alt="" />
-                    <div className=" p-2">
-                        <p className="pb-1">{dependent.name}</p>
-                    </div>
-                </button>
+            <div className="border-red-500 w-40  border-solid border-2 flex flex-col  m-5 items-center rounded relative" onClick={() => GoToVaccineTable(dependent)}>
+                <img className="w-full p-1 " src="../man.svg" alt="" />
+                <div className=" p-2">
+                    <p className="pb-1">{dependent.name}</p>
+                </div>
             </div>
         );
     }
@@ -94,15 +92,13 @@ export default function Dependent() {
 
                         {dependentes?.map((renderDependents))}
 
-                        <div className="user-add transition duration-75 w-40 ease-in-out border-gray-500 hover:border-gray-600 border-solid border-2 flex flex-col  m-5 items-center rounded relative" >
+                        <div className="user-add transition duration-75 w-40 ease-in-out border-gray-500 hover:border-gray-600 border-solid border-2 flex flex-col  items-center rounded relative mt-5 mr-5" onClick={() => openModal()} >
                             <img className="w-full p-1 " src="../man.svg" alt="" />
                             <div className=" p-2">
                                 <p className="pb-1">Adicionar</p>
                             </div>
                             <div className=" bg-gray-300  z-0  opacity-90  hover:opacity-80  active:bg-black transition ease-in-out rounded absolute flex items-center  justify-center w-full h-full">
-                                <button onClick={() => openModal()}>
-                                    <img src="../add_circle_outline_black.svg" className="absolute z-10" alt="add more depentent" draggable="false" />
-                                </button>
+                                <img src="../add_circle_outline_black.svg" className="absolute z-10" alt="add more depentent" draggable="false" />
                             </div>
                         </div>
                     </div>

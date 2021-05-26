@@ -11,7 +11,7 @@ interface IHeader {
 }
 
 export default function Header(property: IHeader) {
-    function logOut() {
+     function logOut() {
         toast.success(Messages.MSG_S002);
         localStorage.removeItem("JWT");
         Router.push('/');
@@ -21,7 +21,7 @@ export default function Header(property: IHeader) {
     }
     return (
         <header className="header-login">
-            <div className="nav-page">
+            <div className="nav-page flex items-center backdrop-opacity-0">
                 <img className="user-perfil" src="../man.svg" alt="Imagem padrão de usuário" />
                 <div>
                     <div className="user-name">{property.name}</div>

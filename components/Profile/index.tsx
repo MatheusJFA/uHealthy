@@ -13,8 +13,8 @@ export function Profile(property: IProfile) {
     }
 
     return (
-        <div className="mx-auto user-information flex flex-row items-center border-4 border-red-500">
-            <button onClick={() => GoToVaccineTable()}>
+        <div className="flex flex-row items-center" onClick={() => GoToVaccineTable()} >
+            <div className="user-information border-4 border-red-600 flex items-center rounded p-2 ">
                 <img src="../man.svg" className=" w-32" alt="Perfil user" />
                 <div className="user-dates pl-6">
                     <div className="font-semibold">Nome do Usuário:</div>
@@ -22,7 +22,7 @@ export function Profile(property: IProfile) {
                     <div className="font-semibold">CPF: </div>
                     <div className="user-cpf"> {property.cpf} </div>
                 </div>
-            </button>
+            </div>
         </div>
     )
 }
