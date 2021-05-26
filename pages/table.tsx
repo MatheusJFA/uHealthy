@@ -67,7 +67,7 @@ export default function Table() {
 
     if (userID)
       getVaccines();
-    setVaccineID(undefined);
+    //setVaccineID(undefined);
   }, [changeLoading, showModal, userID]);
 
   function openModal() {
@@ -152,7 +152,13 @@ export default function Table() {
         title="Manter Vacina"
         onCancel={() => openModal()}
         actions=""
-        form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
+        form={
+          <ModalVaccine
+            showModal={setShowModal}
+            userID={userID}
+            vaccineID={vaccineID}
+          />
+        }
       />
 
 
