@@ -2,6 +2,7 @@ import { Router } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { useGlobalContext } from '../../../common/hooks/useGlobalContext';
 
 import Messages from '../../../utils/messages';
 import Input from '../../Input';
@@ -17,16 +18,17 @@ interface IModal {
 export default function Modal(property: IModal) {
   const userId = property.userID;
   const vaccineId = property.vaccineId;
+  const [dependentId, setDependentId] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const { changeLoading } = useGlobalContext();
 
   const [vaccineName, setVaccineName] = useState("");
   const [vaccineType, setVaccineType] = useState("");
   const [vaccineManufacturer, setVaccineManufacturer] = useState("");
   const [vaccineMandatory, setVaccineMandatory] = useState(false);
   const [vaccinationLocal, setVaccinationLocal] = useState("");
-
-  let [vaccineDoses, setVaccineDoses] = useState([]);
+  const [vaccineDoses, setVaccineDoses] = useState([]);
 
   async function validate() {
     const schema = Yup.object().shape({
@@ -57,7 +59,6 @@ export default function Modal(property: IModal) {
     if (!errorsList)
       toast.error(Messages.MSG_ERROR(errorsList));
 
-
     if (!(await schema.isValid({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineDoses, vaccineMandatory, vaccinationLocal }))) {
       return false;
     }
@@ -67,7 +68,11 @@ export default function Modal(property: IModal) {
 
   useEffect(() => {
     async function getVaccine() {
+
       if (vaccineId) {
+        changeLoading(true);
+        setLoading(true);
+
         const response = await fetch(`/api/vaccination/vaccine?id=${vaccineId}`);
         const data = await response.json();
 
@@ -85,10 +90,17 @@ export default function Modal(property: IModal) {
 
           setVaccineDoses(doses);
         }
+        changeLoading(false);
+        setLoading(false);
       }
     }
-    if (vaccineId)
+
+    if (vaccineId) {
       getVaccine();
+    }
+
+    const dependentData = JSON.parse(localStorage.getItem("dependent"));
+    setDependentId(dependentData ? dependentData.id : "");
   }, [vaccineId]);
 
   async function discard() {
@@ -123,7 +135,9 @@ export default function Modal(property: IModal) {
     if (validation) {
       if (vaccineId) {
         try {
-          setLoading(false);
+          setLoading(true);
+          changeLoading(true);
+
           const response = await fetch("/api/vaccination", {
             method: "PUT",
             headers: {
@@ -139,7 +153,8 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "atualizada"));
             property.showModal(false);
-            await setLoading(true);
+            setLoading(false);
+            changeLoading(false);
             return result;
           }
         } catch (error) {
@@ -148,14 +163,29 @@ export default function Modal(property: IModal) {
       }
       else {
         try {
-          setLoading(false);
-          const response = await fetch("/api/vaccination", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
-          });
+          setLoading(true);
+          changeLoading(true);
+
+          let response;
+
+          if (dependentId != "") {
+            response = await fetch("/api/vaccination", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ userId, dependentId: Number(dependentId), vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            });
+          }
+          else {
+            response = await fetch("/api/vaccination", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ userId, vaccineName, vaccineType, vaccineManufacturer, vaccineMandatory, vaccineDoses, vaccinationLocal })
+            });
+          }
 
           const result = await response.json();
 
@@ -164,7 +194,8 @@ export default function Modal(property: IModal) {
           else {
             toast.success(Messages.MSG_SUCCESS_MESSAGE("Vacina", "cadastrada"));
             property.showModal(false);
-            setLoading(true);
+            setLoading(false);
+            changeLoading(false);
             return result;
           }
         }
@@ -190,7 +221,7 @@ export default function Modal(property: IModal) {
 
   return (
     <>
-      {property.showModal &&
+      {property.showModal && !loading &&
         <form>
           <div className="background">
             <div className="conteudoModal">

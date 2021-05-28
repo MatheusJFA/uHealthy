@@ -6,12 +6,13 @@ import jwt from 'jsonwebtoken';
 import Messages from '../utils/messages';
 import Modal from '../components/Modal';
 import ModalVaccine from '../components/Modal/Vaccine';
-import Loading from '../components/Loading';
+import Header from '../components/Header';
 
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Table() {
   const [userID, setUserID] = useState("");
+  const [dependent, setDependent] = useState({ id: -1, name: "", cpf: "" });
   const [name, setName] = useState("");
   const [cpf, setCPF] = useState("");
   const [vaccines, setVaccines] = useState([]);
@@ -33,6 +34,11 @@ export default function Table() {
         Router.push("/")
       }
       const data = await jwt.decode(jwtData);
+      const dependentData = JSON.parse(localStorage.getItem("dependent"));
+      if (dependentData) {
+        setDependent(dependentData);
+      }
+
       setName(data.name);
       setCPF(data.cpf);
       setUserID(data.id);
@@ -42,8 +48,16 @@ export default function Table() {
 
   useEffect(() => {
     async function getVaccines() {
-      const response = await fetch(`/api/vaccination?userId=${userID}`);
+      let response;
+      if (dependent.id === -1) {
+        response = await fetch(`/api/vaccination?userId=${userID}`);
+      }
+      else {
+        response = await fetch(`/api/vaccination?userId=${userID}&dependentId=${dependent.id}`);
+      }
+
       const data = await response.json();
+      console.log(data);
 
       setVaccines(data.vaccinations);
 
@@ -53,17 +67,11 @@ export default function Table() {
 
     if (userID)
       getVaccines();
-    setVaccineID(undefined);
-  }, [changeLoading,showModal, userID]);
+    //setVaccineID(undefined);
+  }, [changeLoading, showModal, userID]);
 
   function openModal() {
     setShowModal(!showModal);
-  }
-
-  function logOut() {
-    toast.success(Messages.MSG_S002);
-    localStorage.removeItem("JWT");
-    Router.push('/');
   }
 
   const renderDoses = (dose) => {
@@ -75,14 +83,13 @@ export default function Table() {
   }
 
   function onRowClick(id) {
-    setTimeout(() => {
-      setVaccineID(id)
-    }, 2000);
-
+    setVaccineID(id);
+    changeLoading(true);
+    setLoading(true);
     openModal();
+    changeLoading(false);
+    setLoading(false);
   }
-
-
 
   const renderVaccines = (vaccine) => {
     return (
@@ -98,21 +105,12 @@ export default function Table() {
 
   return (
     <>
-      <div className="header-login">
-        <div className="nav-page">
-          <img className="user-perfil" src="../man.svg" alt="Imagem padrão de usuário" />
-          <div>
-            <div className="user-name">{name}</div>
-            <div className="user-id">{cpf}</div>
-          </div>
-        </div>
-        <button className="bg-red-500 p-2 rounded text-gray-100 cursor-pointer transition duration-150 hover:shadow-md hover:bg-red-600" type="button" onClick={() => logOut()}> Sair </button>
-      </div>
+      <Header cpf={dependent.cpf !== "" ? dependent.cpf : cpf} name={dependent.name !== "" ? dependent.name : name} showBack />
 
       <nav className="navbar">
         <ul>
           <li><a href="#"> Vacinas Obrigatórias </a></li>
-          <li><a href="#"> Vacinas de Campanhas </a></li>
+          {/* <li><a href="#"> Vacinas de Campanhas </a></li> */}
         </ul>
       </nav>
 
@@ -141,7 +139,7 @@ export default function Table() {
         </div>
       }
 
-      {loading && vaccines.length <= 0 &&
+      {!loading && vaccines.length <= 0 &&
         <div className="flex flex-grow justify-center items-center">
           <p className="text-red-500 text-xl text-center mt-10">Este usuário não possui nenhuma vacina cadastrada!</p>
         </div>
@@ -155,10 +153,16 @@ export default function Table() {
 
       <Modal
         isOpen={showModal}
-        title="Cadastrar nova vacina"
+        title="Manter Vacina"
         onCancel={() => openModal()}
         actions=""
-        form={<ModalVaccine showModal={setShowModal} userID={userID} vaccineId={vaccineID} />}
+        form={
+          <ModalVaccine
+            showModal={setShowModal}
+            userID={userID}
+            vaccineId={vaccineID}
+          />
+        }
       />
 
 

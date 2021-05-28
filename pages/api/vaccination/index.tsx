@@ -11,13 +11,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     const schema = Yup.object().shape({
       userId: Yup.number().required(),
+      dependentId: Yup.number(),
     });
 
     if (!(await schema.isValid(request.query))) {
       return response.status(400).send({ error: Messages.MSG_E003("userId") });
     }
 
-    const { userId } = request.query;
+    const { userId, dependentId } = request.query;
 
     const userExists = await prisma.user.findFirst(
       {
@@ -31,6 +32,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const vaccinations = await prisma.vaccination.findMany({
       where: {
         userId: Number(userId),
+        dependentId: dependentId ? Number(dependentId) : null
       },
     });
 
@@ -46,6 +48,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "POST") {
     const schema = Yup.object().shape({
       userId: Yup.number().required(Messages.MSG_E003("userId")),
+      dependentId: Yup.number(),
       vaccineName: Yup.string().required(Messages.MSG_E003("vaccineName")),
       vaccineType: Yup.string().required(Messages.MSG_E003("vaccineType")),
       vaccineManufacturer: Yup.string(),
@@ -60,6 +63,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const {
       userId,
+      dependentId,
       vaccineName,
       vaccineType,
       vaccineManufacturer,
@@ -81,6 +85,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       where: {
         AND: [
           { userId },
+          { dependentId },
           { vaccineName },
           { vaccineType },
           { vaccineManufacturer }
@@ -95,6 +100,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const vaccination = await prisma.vaccination.create({
       data: {
         userId,
+        dependentId,
         vaccineName,
         vaccineType,
         vaccineManufacturer,
@@ -112,6 +118,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "PUT") {
     const schema = Yup.object().shape({
       id: Yup.number().required(Messages.MSG_E003("id")),
+      userId: Yup.number().required(),
+      dependentId: Yup.number(),
       vaccineName: Yup.string(),
       vaccineType: Yup.string(),
       vaccineManufacturer: Yup.string(),
@@ -127,6 +135,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const {
       id,
       userId,
+      dependentId,
       vaccineName,
       vaccineType,
       vaccineManufacturer,
@@ -138,26 +147,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     let vaccinationExists = await prisma.vaccination.findFirst({
       where: {
         id,
+        userId,
+        dependentId
       },
     });
 
     if (!vaccinationExists) {
       return response.status(400).json({ error: Messages.MSG_E001("Vacina") });
-    }
-
-    vaccinationExists = await prisma.vaccination.findFirst({
-      where: {
-        AND: [
-          { userId },
-          { vaccineName },
-          { vaccineType },
-          { vaccineManufacturer }
-        ],
-      },
-    });
-
-    if (id !== vaccinationExists.id) {
-      return response.status(400).json({ error: Messages.MSG_E009 });
     }
 
     const vaccination = await prisma.vaccination.update({
@@ -166,6 +162,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       },
       data: {
         userId,
+        dependentId,
         vaccineName,
         vaccineType,
         vaccineManufacturer,

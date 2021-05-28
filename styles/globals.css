@@ -82,7 +82,6 @@ input:focus + label {
 
 
 h1 {
-  text-align: center;
   color: var(--textColor);
   font-family: 'Rubik';
   font-weight: 400;

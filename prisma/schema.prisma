@@ -17,17 +17,32 @@ model User {
   birthDate   DateTime
   createdAt   DateTime      @default(now())
   active      Boolean       @default(true)
-  Vaccination Vaccination[]
+  vaccination Vaccination[]
+  dependents  Dependent[]
+}
+
+model Dependent {
+  id          Int           @id @default(autoincrement())
+  userId      Int
+  name        String
+  cpf         String
+  birthDate   DateTime
+  createdAt   DateTime      @default(now())
+  active      Boolean       @default(true)
+  vaccination Vaccination[]
+  user        User          @relation(fields: [userId], references: [id])
 }
 
 model Vaccination {
-  id                  Int      @id @default(autoincrement())
-  userId              Int
+  id                  Int        @id @default(autoincrement())
+  userId              Int?
+  dependentId         Int?
   vaccineName         String
   vaccineType         String
   vaccineManufacturer String?
-  vaccineMandatory    Boolean  @default(true)
+  vaccineMandatory    Boolean    @default(true)
   vaccineDoses        String[]
   vaccinationLocal    String?
-  user                User     @relation(fields: [userId], references: [id])
+  user                User?      @relation(fields: [userId], references: [id])
+  dependents          Dependent? @relation(fields: [dependentId], references: [id])
 }

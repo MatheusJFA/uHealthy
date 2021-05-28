@@ -9,6 +9,7 @@ const Messages = {
   MSG_E007: "Usuário não encontrado",
   MSG_E008: "Nenhuma vacinação encontrada para este usuário",
   MSG_E009: "Não foi possivel atualizar, ja existe uma vacinação com este nome",
+  MSG_E010: "Nenhum dependente encontrado para este usuário",
 
 
   MSG_CPF_ERROR: "O CPF digitado não é valido!",
